@@ -1,0 +1,11 @@
+﻿global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Logging.Abstractions;
+global using MicrosoftAzureSentinel.Api.Exceptions;
+global using System;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Net.Http.Headers;
+global using System.Runtime.Serialization;
+global using System.Text;
+global using System.Threading;
+global using System.Threading.Tasks;
