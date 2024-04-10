@@ -19,8 +19,12 @@ public class QueryResponse
 			{
 				for (var i = 0; i < row.Count; i++)
 				{
-					var value = row[i] is JsonElement element ? element : throw new InvalidOperationException("Deserialization failure.");
+					if (row[i] is null)
+					{
+						continue;
+					}
 
+					var value = row[i] is JsonElement element ? element : throw new InvalidOperationException("Deserialization failure.");
 					row[i] = value.ValueKind switch
 					{
 						JsonValueKind.String => value.GetString(),
