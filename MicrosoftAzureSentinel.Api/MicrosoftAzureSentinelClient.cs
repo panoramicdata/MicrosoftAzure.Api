@@ -243,9 +243,14 @@ public class MicrosoftAzureSentinelClient : IDisposable
 		var response = await _httpClient.GetAsync(new Uri($"query?query={queryRequest.Query}", UriKind.Relative), cancellationToken)
 			.ConfigureAwait(false);
 		response.EnsureSuccessStatusCode();
-		return await response
+
+		var queryResponse = await response
 			.Content
 			.ReadFromJsonAsync<QueryResponse>(cancellationToken)
 			.ConfigureAwait(false) ?? throw new FormatException("Invalid response format");
+
+		queryResponse.Sanitize();
+
+		return queryResponse;
 	}
 }

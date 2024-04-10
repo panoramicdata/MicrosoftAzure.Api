@@ -9,8 +9,8 @@ public class Table
 	public required string Name { get; set; }
 
 	[JsonPropertyName("columns")]
-	public required ICollection<Column> Columns { get; init; }
+	public required IList<Column> Columns { get; init; }
 
 	[JsonPropertyName("rows")]
-	public required ICollection<ICollection<object>> Rows { get; init; }
+	public required IList<IList<object?>> Rows { get; init; }
 }

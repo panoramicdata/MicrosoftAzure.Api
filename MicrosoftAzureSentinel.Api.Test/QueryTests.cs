@@ -2,7 +2,7 @@ using MicrosoftAzureSentinel.Api.Models;
 
 namespace MicrosoftAzureSentinel.Api.Test;
 
-public class IncidentTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
+public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
 {
 	[Fact]
 	public async Task QueryAsync_SimpleQuery_Succeeds()
