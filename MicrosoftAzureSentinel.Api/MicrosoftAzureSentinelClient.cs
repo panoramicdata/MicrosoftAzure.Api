@@ -233,12 +233,14 @@ public class MicrosoftAzureSentinelClient : IDisposable
 		GC.SuppressFinalize(this);
 	}
 
-	public async Task<QueryResponse> QueryAsync(string query, CancellationToken cancellationToken)
+	public async Task<QueryResponse> QueryAsync(
+		QueryRequest queryRequest,
+		CancellationToken cancellationToken)
 	{
 		await EnsureAccessTokenUpdatedAsync(cancellationToken)
 			.ConfigureAwait(false);
 
-		var response = await _httpClient.GetAsync(new Uri($"query?{query}", UriKind.Relative), cancellationToken)
+		var response = await _httpClient.GetAsync(new Uri($"query?query={queryRequest.Query}", UriKind.Relative), cancellationToken)
 			.ConfigureAwait(false);
 		response.EnsureSuccessStatusCode();
 		return await response

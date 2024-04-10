@@ -9,7 +9,10 @@ public class IncidentTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	{
 		var result = await Client
 			.QueryAsync(
-				"query=union * | where TimeGenerated > ago(1h) | summarize count() by Type, TenantId",
+				new QueryRequest
+				{
+					Query = "union * | where TimeGenerated > ago(1h) | summarize count() by Type, TenantId"
+				},
 				default
 			)
 			.ConfigureAwait(true);
@@ -21,7 +24,10 @@ public class IncidentTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	{
 		var result = await Client
 			.QueryAsync(
-				"query=SigninLogs | take 5",
+				new QueryRequest
+				{
+					Query = "SigninLogs | take 5"
+				},
 				default
 			)
 			.ConfigureAwait(true);
