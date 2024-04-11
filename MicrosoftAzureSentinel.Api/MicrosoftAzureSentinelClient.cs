@@ -1,6 +1,5 @@
 ﻿using MicrosoftAzureSentinel.Api.Extensions;
 using MicrosoftAzureSentinel.Api.Models;
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -13,7 +12,7 @@ public class MicrosoftAzureSentinelClient : IDisposable
 	private bool disposedValue;
 	private readonly MicrosoftAzureSentinelClientOptions _options;
 	private readonly int _optionsHash;
-	private static readonly ConcurrentDictionary<int, BearerToken> _bearerTokens = new();
+	private BearerToken? _bearerToken;
 
 	public MicrosoftAzureSentinelClient(MicrosoftAzureSentinelClientOptions options)
 	{
@@ -112,9 +111,9 @@ public class MicrosoftAzureSentinelClient : IDisposable
 
 	private async Task<BearerToken> GetBearerTokenAsync(CancellationToken cancellationToken)
 	{
-		if (_bearerTokens.TryGetValue(_optionsHash, out var bearerToken) && !bearerToken.IsExpired)
+		if (_bearerToken is not null && !_bearerToken.IsExpired)
 		{
-			return bearerToken;
+			return _bearerToken;
 		}
 
 		using var authHttpClient = new HttpClient
@@ -144,7 +143,7 @@ public class MicrosoftAzureSentinelClient : IDisposable
 			.ConfigureAwait(false)
 			?? throw new InvalidOperationException("Unable to fetch the access token.");
 
-		return _bearerTokens[_optionsHash] = new BearerToken
+		return _bearerToken = new BearerToken
 		{
 			AccessToken = bearerTokenResponse.AccessToken,
 			ExpiryDateTimeUtc = DateTime.UtcNow + TimeSpan.FromSeconds(Math.Max(0, int.Parse(bearerTokenResponse.ExpiresIn, CultureInfo.InvariantCulture) - 10))
