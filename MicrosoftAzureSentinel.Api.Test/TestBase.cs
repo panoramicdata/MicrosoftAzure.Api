@@ -5,6 +5,7 @@ public class TestBase
 	private MicrosoftAzureSentinelClient? _client;
 
 	protected TestConfig TestConfig { get; }
+
 	protected ILogger Logger { get; }
 
 	public TestBase(ITestOutputHelper testOutputHelper)
@@ -14,6 +15,5 @@ public class TestBase
 		TestConfig.Options.Logger = testOutputHelper.BuildLoggerFor<MicrosoftAzureSentinelClient>();
 	}
 
-	protected MicrosoftAzureSentinelClient Client
-		=> _client ??= new(TestConfig.Options);
+	protected MicrosoftAzureSentinelClient Client => _client ??= new(TestConfig.Options);
 }
