@@ -8,7 +8,7 @@
 		<AnalysisMode>All</AnalysisMode>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 		<Authors>Panoramic Data Limited</Authors>
-		<PackageProjectUrl>https://github.com/panoramicdata/MicrosoftDynamics.Api/</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api/</PackageProjectUrl>
 		<Copyright>Copyright © Panoramic Data Limited 2024</Copyright>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -21,7 +21,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<LangVersion>latest</LangVersion>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/panoramicdata/MicrosoftDynamics.Api/</RepositoryUrl>
+		<RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api/</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReleaseNotes>
 			Added AlertRules and Incidents

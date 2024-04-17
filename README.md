@@ -12,3 +12,40 @@ Makes calls to endpoints set out here:
 	o https://learn.microsoft.com/en-us/rest/api/loganalytics/query/get?view=rest-loganalytics-2022-10-27-preview&tabs=HTTP
 * SecurityInsights API:
 	o https://learn.microsoft.com/en-us/rest/api/securityinsights/operation-groups?view=rest-securityinsights-2024-03-01
+
+## Example usage:
+
+```csharp
+using MicrosoftAzureSentinel.Api;
+
+var subscriptionId = new Guid("your-subscription-id");
+var resourceGroupName = "your-resource-group-name";
+var workspaceName = "your-workspace-name";
+
+var client = new MicrosoftAzureSentinelClient(new MicrosoftAzureSentinelClientOptions
+{
+	TenantId = "your-tenant-id",
+	ClientId = "your-client-id",
+	ClientSecret = "your-client-secret"
+});
+
+var signInLogs = await Client
+	.QueryAsync(
+		new QueryRequest
+		{
+			Query = "SigninLogs | take 5"
+		},
+		default
+	)
+	.ConfigureAwait(true);
+
+var connectors = await Client
+	.Connectors
+	.GetAsync(
+		subscriptionId,
+		resourceGroupName,
+		workspaceName,
+		default
+	)
+	.ConfigureAwait(true);
+```
