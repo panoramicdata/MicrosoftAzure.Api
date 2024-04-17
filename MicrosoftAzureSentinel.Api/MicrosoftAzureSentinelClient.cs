@@ -1,11 +1,16 @@
-﻿using MicrosoftAzureSentinel.Api.Models;
+﻿using MicrosoftAzureSentinel.Api.Interfaces;
+using MicrosoftAzureSentinel.Api.Models;
+using Refit;
+using System.Net.Http.Json;
 
 namespace MicrosoftAzureSentinel.Api;
 
 public class MicrosoftAzureSentinelClient : IDisposable
 {
-	private readonly SentinelHttpClient _logAnalyticsHttpClient;
-	private readonly SentinelHttpClient _managementHttpClient;
+	private readonly CustomHttpClientHandler _logAnalyticsHandler;
+	private readonly HttpClient _logAnalyticsHttpClient;
+	private readonly CustomHttpClientHandler _managementHandler;
+	private readonly HttpClient _managementHttpClient;
 	private bool disposedValue;
 
 	public MicrosoftAzureSentinelClient(MicrosoftAzureSentinelClientOptions options)
@@ -13,50 +18,24 @@ public class MicrosoftAzureSentinelClient : IDisposable
 		ArgumentNullException.ThrowIfNull(options, nameof(options));
 		options.Validate();
 
-		_logAnalyticsHttpClient = new SentinelHttpClient(
-			new Uri($"https://api.loganalytics.io/v1/workspaces/{options.WorkspaceId}/"),
-			options);
+		var logAnalyticsBaseAddress = new Uri($"https://api.loganalytics.io/v1/workspaces/{options.WorkspaceId}/");
+		_logAnalyticsHandler = new CustomHttpClientHandler(options, logAnalyticsBaseAddress);
+		_logAnalyticsHttpClient = new HttpClient(_logAnalyticsHandler)
+		{
+			BaseAddress = logAnalyticsBaseAddress
+		};
 
-		_managementHttpClient = new SentinelHttpClient(
-			new Uri($"https://management.azure.com/"),
-			options);
+		var managementBaseAddress = new Uri($"https://management.azure.com/");
+		_managementHandler = new CustomHttpClientHandler(options, managementBaseAddress);
+		_managementHttpClient = new HttpClient(_managementHandler)
+		{
+			BaseAddress = managementBaseAddress
+		};
+
+		Incidents = RestService.For<IIncidents>(_managementHttpClient);
+		AlertRules = RestService.For<IAlertRules>(_managementHttpClient);
+		Connectors = RestService.For<IConnectors>(_managementHttpClient);
 	}
-
-	public async Task<DataConnectionsResponse> GetConnectorsAsync(
-		Guid subscriptionId,
-		string resourceGroupName,
-		string workspaceName,
-		CancellationToken cancellationToken)
-	{
-		ArgumentNullException.ThrowIfNull(resourceGroupName, nameof(resourceGroupName));
-		ArgumentNullException.ThrowIfNull(workspaceName, nameof(workspaceName));
-
-		return await GetDataAsync<DataConnectionsResponse>(subscriptionId, resourceGroupName, workspaceName, "dataConnectors", cancellationToken).ConfigureAwait(false);
-	}
-
-	public async Task<AlertRulesResponse> GetAlertRulesAsync(
-		Guid subscriptionId,
-		string resourceGroupName,
-		string workspaceName,
-		CancellationToken cancellationToken)
-	{
-		ArgumentNullException.ThrowIfNull(resourceGroupName, nameof(resourceGroupName));
-		ArgumentNullException.ThrowIfNull(workspaceName, nameof(workspaceName));
-
-		return await GetDataAsync<AlertRulesResponse>(subscriptionId, resourceGroupName, workspaceName, "alertRules", cancellationToken).ConfigureAwait(false);
-	}
-
-	private Task<T> GetDataAsync<T>(
-		Guid subscriptionId,
-		string resourceGroupName,
-		string workspaceName,
-		string dataType,
-		CancellationToken cancellationToken)
-		=> _managementHttpClient.SendAsync<T>(
-			HttpMethod.Get,
-			$"subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/{dataType}?api-version=2024-03-01",
-			null,
-			cancellationToken);
 
 	public async Task<QueryResponse> QueryAsync(
 		QueryRequest queryRequest,
@@ -64,17 +43,22 @@ public class MicrosoftAzureSentinelClient : IDisposable
 	{
 		ArgumentNullException.ThrowIfNull(queryRequest, nameof(queryRequest));
 
-		var response = await _logAnalyticsHttpClient.SendAsync<QueryResponse>(
-			HttpMethod.Get,
+		var response = (await _logAnalyticsHttpClient.GetFromJsonAsync<QueryResponse>(
 			$"query?query={queryRequest.Query}",
-			null,
 			cancellationToken)
-			.ConfigureAwait(false);
+			.ConfigureAwait(false))
+			?? throw new FormatException($"Could not deserialise {typeof(QueryResponse).Name}.");
 
 		response.Sanitize();
 
 		return response;
 	}
+
+	public IIncidents Incidents { get; }
+
+	public IAlertRules AlertRules { get; }
+
+	public IConnectors Connectors { get; }
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -83,7 +67,9 @@ public class MicrosoftAzureSentinelClient : IDisposable
 			if (disposing)
 			{
 				_logAnalyticsHttpClient.Dispose();
+				_logAnalyticsHandler.Dispose();
 				_managementHttpClient.Dispose();
+				_managementHandler.Dispose();
 			}
 
 			disposedValue = true;

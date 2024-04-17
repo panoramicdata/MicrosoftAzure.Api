@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRuleResponseProperties
+public class AlertRule
 {
 	[JsonPropertyName("queryFrequency")]
 	public string? QueryFrequency { get; set; }
@@ -18,13 +18,13 @@ public class AlertRuleResponseProperties
 	public int? TriggerThreshold { get; set; }
 
 	[JsonPropertyName("eventGroupingSettings")]
-	public AlertRuleResponseEventGroupingSettings? EventGroupingSettings { get; set; }
+	public Settings? EventGroupingSettings { get; set; }
 
 	[JsonPropertyName("incidentConfiguration")]
-	public AlertRuleResponseIncidentConfiguration? IncidentConfiguration { get; set; }
+	public AlertRuleIncidentConfig? IncidentConfiguration { get; set; }
 
 	[JsonPropertyName("entityMappings")]
-	public IReadOnlyCollection<AlertRuleResponseEntityMapping>? EntityMappings { get; set; }
+	public IReadOnlyCollection<EntityMapping>? EntityMappings { get; set; }
 
 	[JsonPropertyName("severity")]
 	public required string Severity { get; set; }
@@ -63,5 +63,5 @@ public class AlertRuleResponseProperties
 	public string? TemplateVersion { get; set; }
 
 	[JsonPropertyName("customDetails")]
-	public AlertRuleResponseCustomDetails? CustomDetails { get; set; }
+	public AlertRuleCustomDetails? CustomDetails { get; set; }
 }

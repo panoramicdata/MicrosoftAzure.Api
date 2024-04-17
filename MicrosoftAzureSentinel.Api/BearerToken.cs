@@ -1,7 +1,7 @@
 ﻿
 namespace MicrosoftAzureSentinel.Api;
 
-internal class BearerToken
+internal sealed class BearerToken
 {
 	public required string AccessToken { get; set; }
 

@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRulesResponse
+public class Response<TProperties>
 {
 	[JsonPropertyName("value")]
-	public required IReadOnlyCollection<AlertRuleResponseValue> Value { get; set; }
+	public required IReadOnlyCollection<ResponseValue<TProperties>> Values { get; set; }
 }

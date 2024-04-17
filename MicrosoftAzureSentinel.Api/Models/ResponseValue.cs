@@ -2,7 +2,7 @@
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRuleResponseValue
+public class ResponseValue<TProperties>
 {
 	[JsonPropertyName("id")]
 	public required string Id { get; set; }
@@ -17,8 +17,13 @@ public class AlertRuleResponseValue
 	public required string Type { get; set; }
 
 	[JsonPropertyName("kind")]
-	public required string Kind { get; set; }
+	public string? Kind { get; set; }
 
 	[JsonPropertyName("properties")]
-	public required AlertRuleResponseProperties Properties { get; set; }
+	public required TProperties Properties { get; set; }
+
+	[JsonPropertyName("nextLink")]
+	public string? NextLink { get; set; }
+
 }
+

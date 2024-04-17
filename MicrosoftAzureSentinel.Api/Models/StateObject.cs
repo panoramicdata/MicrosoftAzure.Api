@@ -2,7 +2,7 @@
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class DataConnectionsResponseStateObject
+public class StateObject
 {
 	[JsonPropertyName("state")]
 	public required string State { get; set; }

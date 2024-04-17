@@ -2,7 +2,7 @@
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRuleResponseEventGroupingSettings
+public class Settings
 {
 	[JsonPropertyName("aggregationKind")]
 	public required string AggregationKind { get; set; }

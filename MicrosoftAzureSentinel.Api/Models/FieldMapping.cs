@@ -2,7 +2,7 @@
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRuleResponseFieldMapping
+public class FieldMapping
 {
 	[JsonPropertyName("identifier")]
 	public required string Identifier { get; set; }

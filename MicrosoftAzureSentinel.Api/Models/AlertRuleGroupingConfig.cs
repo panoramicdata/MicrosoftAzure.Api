@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRuleResponseGroupingConfiguration
+public class AlertRuleGroupingConfig
 {
 	[JsonPropertyName("enabled")]
 	public required bool Enabled { get; set; }

@@ -2,11 +2,11 @@
 
 namespace MicrosoftAzureSentinel.Api.Models;
 
-public class AlertRuleResponseIncidentConfiguration
+public class AlertRuleIncidentConfig
 {
 	[JsonPropertyName("createIncident")]
 	public required bool CreateIncident { get; set; }
 
 	[JsonPropertyName("groupingConfiguration")]
-	public required AlertRuleResponseGroupingConfiguration GroupingConfiguration { get; set; }
+	public required AlertRuleGroupingConfig GroupingConfiguration { get; set; }
 }
