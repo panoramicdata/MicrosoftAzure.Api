@@ -1,14 +1,14 @@
-using MicrosoftAzureSentinel.Api.Test.Extensions;
+﻿using MicrosoftAzureSentinel.Api.Test.Extensions;
 
 namespace MicrosoftAzureSentinel.Api.Test;
 
-public class ConnectorTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
+public class ThreatIntelligenceIndicatorTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
 {
 	[Fact]
-	public async Task GetConnectorsAsync_SimpleQuery_Succeeds()
+	public async Task GetThreatIntelligenceIndicatorsAsync_SimpleQuery_Succeeds()
 	{
 		var response = await Client
-			.Connectors
+			.ThreatIntelligenceIndicators
 			.GetAsync(
 				TestConfig.SubscriptionId,
 				TestConfig.ResourceGroupName,

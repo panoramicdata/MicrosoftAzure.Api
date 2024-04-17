@@ -13,7 +13,7 @@ Makes calls to endpoints set out here:
 * SecurityInsights API:
 	o https://learn.microsoft.com/en-us/rest/api/securityinsights/operation-groups?view=rest-securityinsights-2024-03-01
 
-## Example usage:
+## Example usage
 
 ```csharp
 using MicrosoftAzureSentinel.Api;

@@ -32,9 +32,10 @@ public class MicrosoftAzureSentinelClient : IDisposable
 			BaseAddress = managementBaseAddress
 		};
 
-		Incidents = RestService.For<IIncidents>(_managementHttpClient);
 		AlertRules = RestService.For<IAlertRules>(_managementHttpClient);
 		Connectors = RestService.For<IConnectors>(_managementHttpClient);
+		Incidents = RestService.For<IIncidents>(_managementHttpClient);
+		ThreatIntelligenceIndicators = RestService.For<IThreatIntelligenceIndicators>(_managementHttpClient);
 	}
 
 	public async Task<QueryResponse> QueryAsync(
@@ -54,11 +55,13 @@ public class MicrosoftAzureSentinelClient : IDisposable
 		return response;
 	}
 
-	public IIncidents Incidents { get; }
-
 	public IAlertRules AlertRules { get; }
 
 	public IConnectors Connectors { get; }
+
+	public IIncidents Incidents { get; }
+
+	public IThreatIntelligenceIndicators ThreatIntelligenceIndicators { get; }
 
 	protected virtual void Dispose(bool disposing)
 	{
