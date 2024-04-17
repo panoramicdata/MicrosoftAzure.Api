@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MicrosoftAzureSentinel.Api.Models;
+namespace MicrosoftAzure.Api.Models;
 
 public class ResponseValue<TProperties> : SimpleResponseValue<TProperties>
 {

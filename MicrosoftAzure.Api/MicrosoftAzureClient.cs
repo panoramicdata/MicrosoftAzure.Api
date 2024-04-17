@@ -1,9 +1,9 @@
 ﻿using MicrosoftAzure.Api.Models.SecurityInsights;
-using MicrosoftAzureSentinel.Api.Interfaces;
+using MicrosoftAzure.Api.Interfaces;
 using Refit;
 using System.Net.Http.Json;
 
-namespace MicrosoftAzureSentinel.Api;
+namespace MicrosoftAzure.Api;
 
 public class MicrosoftAzureSentinelClient : IDisposable
 {
@@ -13,7 +13,7 @@ public class MicrosoftAzureSentinelClient : IDisposable
 	private readonly HttpClient _managementHttpClient;
 	private bool disposedValue;
 
-	public MicrosoftAzureSentinelClient(MicrosoftAzureSentinelClientOptions options)
+	public MicrosoftAzureSentinelClient(MicrosoftAzureClientOptions options)
 	{
 		ArgumentNullException.ThrowIfNull(options, nameof(options));
 		options.Validate();

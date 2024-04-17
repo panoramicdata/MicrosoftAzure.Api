@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace MicrosoftAzureSentinel.Api.Test;
+namespace MicrosoftAzure.Api.Test;
 
 public class TestConfig
 {
-	public MicrosoftAzureSentinelClientOptions Options { get; set; } = null!;
+	public MicrosoftAzureClientOptions Options { get; set; } = null!;
 
 	public string WorkspaceName { get; set; } = null!;
 

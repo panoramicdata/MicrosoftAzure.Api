@@ -11,5 +11,5 @@ using System.Diagnostics.CodeAnalysis;
 	"CA1848:Use the LoggerMessage delegates",
 	Justification = "Development effort not worth the performance gains",
 	Scope = "namespaceanddescendants",
-	Target = "~N:MicrosoftAzureSentinel.Api")
+	Target = "~N:MicrosoftAzure.Api")
 ]

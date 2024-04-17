@@ -1,5 +1,5 @@
 ﻿
-namespace MicrosoftAzureSentinel.Api;
+namespace MicrosoftAzure.Api;
 
 internal sealed class BearerToken
 {

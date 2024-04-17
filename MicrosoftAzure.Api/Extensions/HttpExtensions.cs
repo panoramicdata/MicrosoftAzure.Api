@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MicrosoftAzureSentinel.Api.Extensions;
+namespace MicrosoftAzure.Api.Extensions;
 
 internal static class HttpExtensions
 {

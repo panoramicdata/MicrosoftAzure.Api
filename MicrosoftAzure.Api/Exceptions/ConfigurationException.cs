@@ -1,4 +1,4 @@
-﻿namespace MicrosoftAzureSentinel.Api.Exceptions;
+﻿namespace MicrosoftAzure.Api.Exceptions;
 
 public class ConfigurationException : Exception
 {

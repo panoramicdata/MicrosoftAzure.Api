@@ -1,5 +1,5 @@
-using MicrosoftAzureSentinel.Api.Test;
-using MicrosoftAzureSentinel.Api.Test.Extensions;
+using MicrosoftAzure.Api.Test;
+using MicrosoftAzure.Api.Test.Extensions;
 
 namespace MicrosoftAzure.Api.Test.Sentinel;
 

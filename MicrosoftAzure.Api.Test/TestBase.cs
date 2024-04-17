@@ -1,4 +1,4 @@
-﻿namespace MicrosoftAzureSentinel.Api.Test;
+﻿namespace MicrosoftAzure.Api.Test;
 
 public class TestBase
 {

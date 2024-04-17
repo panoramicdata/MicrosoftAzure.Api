@@ -1,6 +1,6 @@
-﻿using MicrosoftAzureSentinel.Api.Models;
+﻿using MicrosoftAzure.Api.Models;
 
-namespace MicrosoftAzureSentinel.Api.Test.Extensions;
+namespace MicrosoftAzure.Api.Test.Extensions;
 internal static class ValuesExtensions
 {
 	internal static void CheckValues<T>(this Response<T> response)

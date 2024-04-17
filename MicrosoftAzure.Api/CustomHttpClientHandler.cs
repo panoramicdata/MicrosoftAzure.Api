@@ -1,14 +1,14 @@
 ﻿
 
-using MicrosoftAzureSentinel.Api.Extensions;
+using MicrosoftAzure.Api.Extensions;
 using System.Globalization;
 using System.Net.Http.Json;
 
-namespace MicrosoftAzureSentinel.Api;
+namespace MicrosoftAzure.Api;
 
-internal class CustomHttpClientHandler(MicrosoftAzureSentinelClientOptions options, Uri baseAddress) : HttpClientHandler
+internal class CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri baseAddress) : HttpClientHandler
 {
-	private readonly MicrosoftAzureSentinelClientOptions _options = options;
+	private readonly MicrosoftAzureClientOptions _options = options;
 	private readonly Uri _resource = new(baseAddress.GetLeftPart(UriPartial.Authority));
 
 	private BearerToken? _bearerToken;
@@ -87,7 +87,7 @@ internal class CustomHttpClientHandler(MicrosoftAzureSentinelClientOptions optio
 
 
 	private static async Task LogResponseAsync(
-		MicrosoftAzureSentinelClientOptions options,
+		MicrosoftAzureClientOptions options,
 		HttpResponseMessage responseMessage)
 	{
 		if (!options.Logger.IsEnabled(LogLevel.Debug))

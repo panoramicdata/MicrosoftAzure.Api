@@ -1,9 +1,9 @@
-﻿namespace MicrosoftAzureSentinel.Api;
+﻿namespace MicrosoftAzure.Api;
 
 /// <summary>
 /// Options
 /// </summary>
-public class MicrosoftAzureSentinelClientOptions
+public class MicrosoftAzureClientOptions
 {
 	/// <summary>
 	/// The tenant id

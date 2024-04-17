@@ -1,6 +1,6 @@
 ﻿global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Logging.Abstractions;
-global using MicrosoftAzureSentinel.Api.Exceptions;
+global using MicrosoftAzure.Api.Exceptions;
 global using System;
 global using System.Linq;
 global using System.Net.Http;

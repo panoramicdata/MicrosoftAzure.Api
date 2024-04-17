@@ -1,8 +1,8 @@
 ﻿using MicrosoftAzure.Api.Models.Resources;
-using MicrosoftAzureSentinel.Api.Models;
+using MicrosoftAzure.Api.Models;
 using Refit;
 
-namespace MicrosoftAzureSentinel.Api.Interfaces;
+namespace MicrosoftAzure.Api.Interfaces;
 
 public interface IResources
 {

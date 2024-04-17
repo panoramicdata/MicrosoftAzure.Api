@@ -1,5 +1,5 @@
 using MicrosoftAzure.Api.Models.SecurityInsights;
-using MicrosoftAzureSentinel.Api.Test;
+using MicrosoftAzure.Api.Test;
 
 namespace MicrosoftAzure.Api.Test.SecurityInsights;
 
