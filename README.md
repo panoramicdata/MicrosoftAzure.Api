@@ -1,7 +1,7 @@
-# MicrosoftAzureSentinel.Api
+# MicrosoftAzure.Api
 
-[![Nuget](https://img.shields.io/nuget/v/MicrosoftAzureSentinel.Api)](https://www.nuget.org/packages/MicrosoftAzureSentinel.Api/)
-[![Nuget](https://img.shields.io/nuget/dt/MicrosoftAzureSentinel.Api)](https://www.nuget.org/packages/MicrosoftAzureSentinel.Api/)
+[![Nuget](https://img.shields.io/nuget/v/MicrosoftAzure.Api)](https://www.nuget.org/packages/MicrosoftAzure.Api/)
+[![Nuget](https://img.shields.io/nuget/dt/MicrosoftAzure.Api)](https://www.nuget.org/packages/MicrosoftAzure.Api/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7c55bd140e544652a4a8ed1a0ed9e729)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=panoramicdata/MicrosoftAzureSentinel.Api&amp;utm_campaign=Badge_Grade)
 
@@ -16,7 +16,7 @@ Makes calls to endpoints set out here:
 ## Example usage
 
 ```csharp
-using MicrosoftAzureSentinel.Api;
+using MicrosoftAzure.Api;
 
 var subscriptionId = new Guid("your-subscription-id");
 var resourceGroupName = "your-resource-group-name";
@@ -30,6 +30,7 @@ var client = new MicrosoftAzureSentinelClient(new MicrosoftAzureSentinelClientOp
 });
 
 var signInLogs = await Client
+	.SecurityInsights
 	.QueryAsync(
 		new QueryRequest
 		{
@@ -40,8 +41,8 @@ var signInLogs = await Client
 	.ConfigureAwait(true);
 
 var connectors = await Client
-	.Connectors
-	.GetAsync(
+	.Sentinel
+	.GetConnectorsAsync(
 		subscriptionId,
 		resourceGroupName,
 		workspaceName,
