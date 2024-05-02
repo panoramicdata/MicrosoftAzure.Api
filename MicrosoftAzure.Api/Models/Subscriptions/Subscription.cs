@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace MicrosoftAzure.Api.Models.Subscriptions;
+
 public class Subscription
 {
 	[JsonPropertyName("id")]
@@ -11,7 +12,7 @@ public class Subscription
 	public required string SubscriptionId { get; set; }
 
 	[JsonPropertyName("tenantId")]
-	public required string TenantId { get; set; }
+	public string? TenantId { get; set; }
 
 	[JsonPropertyName("displayName")]
 	public required string DisplayName { get; set; }
@@ -26,8 +27,8 @@ public class Subscription
 	public required string AuthorizationSource { get; set; }
 
 	[JsonPropertyName("managedByTenants")]
-	public required IReadOnlyCollection<SubscriptionTenantInfo> ManagedByTenants { get; set; }
+	public IReadOnlyCollection<SubscriptionTenantInfo>? ManagedByTenants { get; set; }
 
 	[JsonPropertyName("tags")]
-	public required IReadOnlyDictionary<string, string> Tags { get; set; }
+	public IReadOnlyDictionary<string, string>? Tags { get; set; }
 }

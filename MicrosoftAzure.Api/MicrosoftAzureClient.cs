@@ -1,7 +1,5 @@
 ﻿using MicrosoftAzure.Api.Interfaces;
-using MicrosoftAzure.Api.Models.SecurityInsights;
 using Refit;
-using System.Net.Http.Json;
 
 namespace MicrosoftAzure.Api;
 
@@ -11,6 +9,8 @@ public class MicrosoftAzureClient : IDisposable
 	private readonly HttpClient _logAnalyticsHttpClient;
 	private readonly CustomHttpClientHandler _managementHandler;
 	private readonly HttpClient _managementHttpClient;
+	private readonly CustomHttpClientHandler _graphHandler;
+	private readonly HttpClient _graphHttpClient;
 	private bool disposedValue;
 
 	public MicrosoftAzureClient(MicrosoftAzureClientOptions options)
@@ -32,32 +32,29 @@ public class MicrosoftAzureClient : IDisposable
 			BaseAddress = managementBaseAddress
 		};
 
+		var graphBaseAddress = new Uri($"https://graph.microsoft.com/");
+		_graphHandler = new CustomHttpClientHandler(options, graphBaseAddress);
+		_graphHttpClient = new HttpClient(_graphHandler)
+		{
+			BaseAddress = graphBaseAddress
+		};
+
+		LogAnalytics = new LogAnalytics(_logAnalyticsHttpClient);
 		Sentinel = RestService.For<ISentinel>(_managementHttpClient);
 		Resources = RestService.For<IResources>(_managementHttpClient);
 		Subscriptions = RestService.For<ISubscriptions>(_managementHttpClient);
+		Tenants = RestService.For<ITenants>(_graphHttpClient);
 	}
 
-	public async Task<QueryResponse> QueryAsync(
-		QueryRequest queryRequest,
-		CancellationToken cancellationToken)
-	{
-		ArgumentNullException.ThrowIfNull(queryRequest, nameof(queryRequest));
+	public ILogAnalytics LogAnalytics { get; }
 
-		var response = (await _logAnalyticsHttpClient.GetFromJsonAsync<QueryResponse>(
-			$"query?query={queryRequest.Query}",
-			cancellationToken)
-			.ConfigureAwait(false))
-			?? throw new FormatException($"Could not deserialise {typeof(QueryResponse).Name}.");
-
-		response.Sanitize();
-
-		return response;
-	}
 	public IResources Resources { get; }
 
 	public ISentinel Sentinel { get; }
 
 	public ISubscriptions Subscriptions { get; }
+
+	public ITenants Tenants { get; }
 
 	protected virtual void Dispose(bool disposing)
 	{
@@ -69,6 +66,8 @@ public class MicrosoftAzureClient : IDisposable
 				_logAnalyticsHandler.Dispose();
 				_managementHttpClient.Dispose();
 				_managementHandler.Dispose();
+				_graphHttpClient.Dispose();
+				_graphHandler.Dispose();
 			}
 
 			disposedValue = true;

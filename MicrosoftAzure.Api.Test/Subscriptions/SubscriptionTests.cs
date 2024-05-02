@@ -1,9 +1,11 @@
-﻿using MicrosoftAzure.Api.Test;
-
-namespace MicrosoftAzure.Api.Test.Subscriptions;
+﻿namespace MicrosoftAzure.Api.Test.Subscriptions;
 
 public class SubscriptionTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
 {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
 	[Fact]
 	public async Task GetAllAsync_Succeeds()
 	{
