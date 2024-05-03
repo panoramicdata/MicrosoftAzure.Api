@@ -1,4 +1,4 @@
-﻿namespace MicrosoftAzure.Api.Test.Subscriptions;
+﻿namespace MicrosoftAzure.Api.Test.Tenants;
 
 public class TenantTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
 {
