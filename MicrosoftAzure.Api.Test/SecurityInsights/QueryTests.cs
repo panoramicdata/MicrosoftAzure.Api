@@ -1,5 +1,4 @@
 using MicrosoftAzure.Api.Models.SecurityInsights;
-using MicrosoftAzure.Api.Test;
 
 namespace MicrosoftAzure.Api.Test.SecurityInsights;
 
@@ -9,6 +8,7 @@ public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutpu
 	public async Task QueryAsync_SimpleQuery_Succeeds()
 	{
 		var result = await Client
+			.LogAnalytics
 			.QueryAsync(
 				new QueryRequest
 				{
@@ -24,6 +24,7 @@ public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutpu
 	public async Task QueryAsync_FullQuery_Succeeds()
 	{
 		var result = await Client
+			.LogAnalytics
 			.QueryAsync(
 				new QueryRequest
 				{
