@@ -43,10 +43,13 @@ public class MicrosoftAzureClient : IDisposable
 		Sentinel = RestService.For<ISentinel>(_managementHttpClient);
 		Resources = RestService.For<IResources>(_managementHttpClient);
 		Subscriptions = RestService.For<ISubscriptions>(_managementHttpClient);
-		Tenants = RestService.For<ITenants>(_graphHttpClient);
+		ManagedTenants = RestService.For<IManagedTenants>(_graphHttpClient);
+		Tenants = RestService.For<ITenants>(_managementHttpClient);
 	}
 
 	public ILogAnalytics LogAnalytics { get; }
+
+	public IManagedTenants ManagedTenants { get; }
 
 	public IResources Resources { get; }
 

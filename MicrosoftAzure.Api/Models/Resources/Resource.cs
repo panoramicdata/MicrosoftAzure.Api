@@ -2,7 +2,8 @@
 using System.Text.Json.Serialization;
 
 namespace MicrosoftAzure.Api.Models.Resources;
-public class ResourceGroup
+
+public class Resource
 {
 	[JsonPropertyName("id")]
 	public required string Id { get; set; }
@@ -20,8 +21,11 @@ public class ResourceGroup
 	public IReadOnlyDictionary<string, string> Tags { get; set; } = new Dictionary<string, string>();
 
 	[JsonPropertyName("properties")]
-	public required ResourceGroupProperties Properties { get; set; }
+	public IReadOnlyDictionary<string, string> Properties { get; set; } = new Dictionary<string, string>();
 
 	[JsonPropertyName("managedBy")]
 	public string? ManagedBy { get; set; }
+
+	[JsonPropertyName("systemData")]
+	public SystemData? SystemData { get; set; }
 }

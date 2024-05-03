@@ -14,17 +14,5 @@ public class TenantTests(ITestOutputHelper testOutputHelper) : TestBase(testOutp
 		response.Should().NotBeNull();
 		response.Values.Should().NotBeNullOrEmpty();
 	}
-
-	[Fact]
-	public async Task GetManagedTenantsAsync_Succeeds()
-	{
-		var response = await Client
-			.Tenants
-			.GetManagedTenantsAsync(default)
-			.ConfigureAwait(true);
-
-		response.Should().NotBeNull();
-		response.Values.Should().NotBeNullOrEmpty();
-	}
 }
 

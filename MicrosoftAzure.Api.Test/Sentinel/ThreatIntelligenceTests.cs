@@ -1,5 +1,4 @@
-﻿using MicrosoftAzure.Api.Test;
-using MicrosoftAzure.Api.Test.Extensions;
+﻿using MicrosoftAzure.Api.Test.Extensions;
 using System.Linq;
 
 namespace MicrosoftAzure.Api.Test.Sentinel;
@@ -32,6 +31,21 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 				TestConfig.SubscriptionId,
 				TestConfig.ResourceGroupName,
 				TestConfig.WorkspaceName,
+				default
+			)
+			.ConfigureAwait(true);
+		response.Should().NotBeNull();
+		response.Values.First().Properties.Should().NotBeNull();
+	}
+
+	[Fact]
+	public async Task GetWorkspacesAsync_SimpleQuery_Succeeds()
+	{
+		var response = await Client
+			.Sentinel
+			.GetWorkspacesAsync(
+				TestConfig.SubscriptionId,
+				TestConfig.ResourceGroupName,
 				default
 			)
 			.ConfigureAwait(true);

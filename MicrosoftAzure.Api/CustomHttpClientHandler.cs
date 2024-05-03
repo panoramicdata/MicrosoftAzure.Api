@@ -58,6 +58,7 @@ internal class CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri 
 
 		using var authRequest = new HttpRequestMessage(HttpMethod.Post, "")
 		{
+
 			Content = new StringContent(
 				$"grant_type=client_credentials&client_id={_options.ClientId}&client_secret={_options.ClientSecret}&resource={_resource}",
 				Encoding.UTF8,

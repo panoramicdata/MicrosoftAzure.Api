@@ -7,18 +7,10 @@ namespace MicrosoftAzure.Api.Interfaces;
 public interface ITenants
 {
 	/// <summary>
-	/// 
+	/// https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?view=rest-resources-2022-12-01&tabs=HTTP
 	/// </summary>
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
-	[Get("/tenants")]
+	[Get("/tenants?api-version=2022-12-01")]
 	Task<PlainResponse<Tenant>> GetTenantsAsync(CancellationToken cancellationToken);
-
-	/// <summary>
-	/// https://learn.microsoft.com/en-us/graph/api/managedtenants-managedtenant-list-tenants?view=graph-rest-beta&tabs=csharp#http-request
-	/// </summary>
-	/// <param name="cancellationToken"></param>
-	/// <returns></returns>
-	[Get("/beta/tenantRelationships/managedTenants/tenants")]
-	Task<PlainResponse<Tenant>> GetManagedTenantsAsync(CancellationToken cancellationToken);
 }

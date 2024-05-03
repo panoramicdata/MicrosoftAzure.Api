@@ -1,5 +1,5 @@
-﻿using MicrosoftAzure.Api.Models.Sentinel;
-using MicrosoftAzure.Api.Models;
+﻿using MicrosoftAzure.Api.Models;
+using MicrosoftAzure.Api.Models.Sentinel;
 using Refit;
 
 namespace MicrosoftAzure.Api.Interfaces;
@@ -39,5 +39,12 @@ public interface ISentinel
 		Guid subscriptionId,
 		string resourceGroupName,
 		string workspaceName,
+		CancellationToken cancellationToken);
+
+
+	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces?api-version=2024-03-01")]
+	Task<Response<Workspace>> GetWorkspacesAsync(
+		Guid subscriptionId,
+		string resourceGroupName,
 		CancellationToken cancellationToken);
 }

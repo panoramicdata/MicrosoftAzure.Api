@@ -31,7 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MicrosoftAzure.Api\MicrosoftAzure.Api.csproj" />
+		<ProjectReference Include="..\MicrosoftAzure.Api\MicrosoftAzure.Api.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
