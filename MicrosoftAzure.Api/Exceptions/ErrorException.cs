@@ -41,7 +41,7 @@ public abstract class ErrorException : Exception
 		{
 			Error = new()
 			{
-				Code = "BadRequest",
+				Code = code,
 				Message = message
 			}
 		};
