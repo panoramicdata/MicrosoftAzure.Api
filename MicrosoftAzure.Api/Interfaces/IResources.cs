@@ -1,5 +1,5 @@
-﻿using MicrosoftAzure.Api.Models;
-using MicrosoftAzure.Api.Models.Resources;
+﻿using MicrosoftAzure.Api.Models.Resources;
+using MicrosoftAzure.Api.Models.Responses;
 using Refit;
 
 namespace MicrosoftAzure.Api.Interfaces;
@@ -11,6 +11,7 @@ public interface IResources
 	Task<PlainResponse<Resource>> GetAsync(
 	Guid subscriptionId,
 	[AliasAs("$filter")] string? filter = default,
+	[AliasAs("$expand")] string? expand = default,
 	[AliasAs("$skip")] int? skip = default,
 	[AliasAs("$take")] int? take = default,
 	CancellationToken cancellationToken = default);

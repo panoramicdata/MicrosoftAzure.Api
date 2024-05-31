@@ -27,7 +27,7 @@ public class AlertRule
 	public IReadOnlyCollection<EntityMapping>? EntityMappings { get; set; }
 
 	[JsonPropertyName("severity")]
-	public required string Severity { get; set; }
+	public string? Severity { get; set; }
 
 	[JsonPropertyName("query")]
 	public string? Query { get; set; }
@@ -39,10 +39,10 @@ public class AlertRule
 	public bool? SuppressionEnabled { get; set; }
 
 	[JsonPropertyName("tactics")]
-	public required IReadOnlyCollection<string> Tactics { get; set; }
+	public IReadOnlyCollection<string>? Tactics { get; set; }
 
 	[JsonPropertyName("techniques")]
-	public required IReadOnlyCollection<string> Techniques { get; set; }
+	public IReadOnlyCollection<string>? Techniques { get; set; }
 
 	[JsonPropertyName("displayName")]
 	public required string DisplayName { get; set; }

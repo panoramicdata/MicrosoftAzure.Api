@@ -1,4 +1,4 @@
-﻿using MicrosoftAzure.Api.Models;
+﻿using MicrosoftAzure.Api.Models.Responses;
 using MicrosoftAzure.Api.Models.Subscriptions;
 using Refit;
 

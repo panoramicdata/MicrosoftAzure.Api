@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace MicrosoftAzure.Api.Models.Sentinel;
 
-public class DataConnection
+public class DataConnector
 {
 	[JsonPropertyName("dataTypes")]
 	public required IReadOnlyDictionary<string, StateObject> DataTypes { get; set; }

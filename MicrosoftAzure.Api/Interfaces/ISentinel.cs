@@ -1,4 +1,4 @@
-﻿using MicrosoftAzure.Api.Models;
+﻿using MicrosoftAzure.Api.Models.Responses;
 using MicrosoftAzure.Api.Models.Sentinel;
 using Refit;
 
@@ -7,7 +7,7 @@ namespace MicrosoftAzure.Api.Interfaces;
 public interface ISentinel
 {
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors?api-version=2024-03-01")]
-	Task<Response<DataConnection>> GetConnectorsAsync(
+	Task<Response<DataConnector>> GetDataConnectorsAsync(
 		Guid subscriptionId,
 		string resourceGroupName,
 		string workspaceName,

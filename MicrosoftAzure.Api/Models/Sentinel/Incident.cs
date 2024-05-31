@@ -21,7 +21,7 @@ public class Incident
 	public required IncidentOwner Owner { get; set; }
 
 	[JsonPropertyName("labels")]
-	public required IReadOnlyCollection<string> Labels { get; set; }
+	public required IReadOnlyCollection<Label> Labels { get; set; }
 
 	[JsonPropertyName("firstActivityTimeUtc")]
 	public required DateTime FirstActivityTimeUtc { get; set; }

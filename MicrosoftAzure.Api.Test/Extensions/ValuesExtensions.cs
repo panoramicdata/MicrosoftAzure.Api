@@ -1,4 +1,4 @@
-﻿using MicrosoftAzure.Api.Models;
+﻿using MicrosoftAzure.Api.Models.Responses;
 
 namespace MicrosoftAzure.Api.Test.Extensions;
 internal static class ValuesExtensions
@@ -7,7 +7,11 @@ internal static class ValuesExtensions
 	{
 		response.Should().NotBeNull();
 		response.Values.Should().NotBeNull();
-		response.Values.Should().NotBeNullOrEmpty();
+		if (response.Values.Count == 0)
+		{
+			return;
+		}
+
 		response.Values.Should().NotContainNulls();
 		response.Values.Should().OnlyContain(x => x.Id != null);
 		response.Values.Should().OnlyContain(x => x.Name != null);

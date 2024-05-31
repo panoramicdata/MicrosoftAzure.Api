@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace MicrosoftAzure.Api.Models;
+namespace MicrosoftAzure.Api.Models.Responses;
 
 public class Response<TProperties>
 {

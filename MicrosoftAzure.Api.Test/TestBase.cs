@@ -1,4 +1,9 @@
-﻿namespace MicrosoftAzure.Api.Test;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+
+namespace MicrosoftAzure.Api.Test;
 
 public class TestBase
 {
@@ -16,4 +21,13 @@ public class TestBase
 	}
 
 	protected MicrosoftAzureClient Client => _client ??= new(TestConfig.Options);
+
+	protected async Task<IEnumerable<Guid>> GetSubscriptionIdsAsync(CancellationToken cancellationToken)
+	{
+		var response = await Client
+			.Subscriptions
+			.GetAsync(cancellationToken)
+			.ConfigureAwait(false);
+		return response.Values.Take(TestConfig.MaxSubscriptionTake).Select(s => new Guid(s.Id.Split('/').Last()));
+	}
 }

@@ -1,7 +1,9 @@
 ﻿
 
 using MicrosoftAzure.Api.Extensions;
+using MicrosoftAzure.Api.Models.Responses;
 using System.Globalization;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace MicrosoftAzure.Api;
@@ -38,10 +40,44 @@ internal class CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri 
 			.SendAsync(request, cancellationToken)
 			.ConfigureAwait(false);
 
+		// Handle bad requests
+		if (!responseMessage.IsSuccessStatusCode)
+		{
+			await HandleNonSuccessStatusCodesAsync(responseMessage, cancellationToken)
+				.ConfigureAwait(false);
+		}
+
 		await LogResponseAsync(_options, responseMessage)
 			.ConfigureAwait(false);
 
 		return responseMessage;
+	}
+
+	private static async Task HandleNonSuccessStatusCodesAsync(
+		HttpResponseMessage responseMessage,
+		CancellationToken cancellationToken)
+	{
+		var errorResponse = await responseMessage
+			.Content
+			.ReadFromJsonAsync<ErrorResponse>(cancellationToken)
+			.ConfigureAwait(false);
+
+		if (errorResponse is null)
+		{
+			return;
+		}
+
+		switch (responseMessage.StatusCode)
+		{
+			case HttpStatusCode.Unauthorized:
+				throw new UnauthorizedException(errorResponse);
+			case HttpStatusCode.BadRequest:
+				throw new BadRequestException(errorResponse);
+			case HttpStatusCode.Forbidden:
+				throw new ForbiddenException(errorResponse);
+			case HttpStatusCode.NotFound:
+				throw new NotFoundException(errorResponse);
+		}
 	}
 
 	private async Task<BearerToken> GetBearerTokenAsync(CancellationToken cancellationToken)

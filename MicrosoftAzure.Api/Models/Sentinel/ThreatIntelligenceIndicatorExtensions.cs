@@ -8,5 +8,5 @@ public class ThreatIntelligenceIndicatorExtensions
 	public SentinelExtension? SentinelExtension { get; set; }
 
 	[JsonPropertyName("indicatorProvider")]
-	public required string IndicatorProvider { get; set; }
+	public string? IndicatorProvider { get; set; }
 }

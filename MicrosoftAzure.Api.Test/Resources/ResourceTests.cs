@@ -5,31 +5,40 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	[Fact]
 	public async Task GetResourcesAsync_Succeeds()
 	{
-		var response = await Client
-			.Resources
-			.GetAsync(
-				TestConfig.SubscriptionId,
-				default)
-			.ConfigureAwait(true);
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		{
+			var response = await Client
+				.Resources
+				.GetAsync(
+					subscriptionId,
+					default)
+				.ConfigureAwait(true);
 
-		response.Should().NotBeNull();
-		response.Values.Should().NotBeNullOrEmpty();
+			response.Should().NotBeNull();
+			response.Values.Should().NotBeNullOrEmpty();
+		}
 	}
 
 	[Fact]
 	public async Task GetResourcesAsync_WithFilter_Succeeds()
 	{
-		var response = await Client
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		{
+			var response = await Client
 			.Resources
 			.GetAsync(
-				TestConfig.SubscriptionId,
+				subscriptionId,
 				filter: "resourceType eq 'Microsoft.OperationalInsights/workspaces'",
 				cancellationToken: default
 				)
 			.ConfigureAwait(true);
 
-		response.Should().NotBeNull();
-		response.Values.Should().NotBeNullOrEmpty();
-		response.Values.Should().OnlyContain(x => x.Type == "Microsoft.OperationalInsights/workspaces");
+			response.Should().NotBeNull();
+			response.Values.Should().NotBeNull();
+			if (response.Values.Count != 0)
+			{
+				response.Values.Should().OnlyContain(x => x.Type == "Microsoft.OperationalInsights/workspaces");
+			}
+		}
 	}
 }

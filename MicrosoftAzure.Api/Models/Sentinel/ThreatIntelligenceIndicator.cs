@@ -21,7 +21,7 @@ public class ThreatIntelligenceIndicator
 	public required string ExternalId { get; set; }
 
 	[JsonPropertyName("externalLastUpdatedTimeUtc")]
-	public required DateTime ExternalLastUpdatedTimeUtc { get; set; }
+	public DateTime? ExternalLastUpdatedTimeUtc { get; set; }
 
 	[JsonPropertyName("externalReferences")]
 	public required IReadOnlyCollection<ExternalReference> ExternalReferences { get; set; }
@@ -33,7 +33,7 @@ public class ThreatIntelligenceIndicator
 	public required DateTime LastUpdatedTimeUtc { get; set; }
 
 	[JsonPropertyName("objectMarkingRefs")]
-	public required IReadOnlyCollection<string> ObjectMarkingRefs { get; set; }
+	public IReadOnlyCollection<string>? ObjectMarkingRefs { get; set; }
 
 	[JsonPropertyName("source")]
 	public required string Source { get; set; }

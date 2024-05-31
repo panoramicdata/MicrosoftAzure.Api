@@ -1,16 +1,10 @@
-﻿using System;
-
-namespace MicrosoftAzure.Api.Test;
+﻿namespace MicrosoftAzure.Api.Test;
 
 public class TestConfig
 {
 	public MicrosoftAzureClientOptions Options { get; set; } = null!;
 
-	public string WorkspaceName { get; set; } = null!;
-
-	public string ResourceGroupName { get; set; } = null!;
-
-	public Guid SubscriptionId { get; set; }
+	public int MaxSubscriptionTake { get; internal set; } = 5;
 
 	internal static TestConfig Load()
 	{
