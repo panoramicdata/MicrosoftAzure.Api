@@ -57,28 +57,24 @@ internal class CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri 
 		HttpResponseMessage responseMessage,
 		CancellationToken cancellationToken)
 	{
-		var errorResponse = await responseMessage
-			.Content
-			.ReadFromJsonAsync<ErrorResponse>(cancellationToken)
-			.ConfigureAwait(false);
-
-		if (errorResponse is null)
-		{
-			return;
-		}
-
 		switch (responseMessage.StatusCode)
 		{
 			case HttpStatusCode.Unauthorized:
-				throw new UnauthorizedException(errorResponse);
+				throw new UnauthorizedException(await GetErrorResponseAsync(responseMessage, cancellationToken).ConfigureAwait(false));
 			case HttpStatusCode.BadRequest:
-				throw new BadRequestException(errorResponse);
+				throw new BadRequestException(await GetErrorResponseAsync(responseMessage, cancellationToken).ConfigureAwait(false));
 			case HttpStatusCode.Forbidden:
-				throw new ForbiddenException(errorResponse);
+				throw new ForbiddenException(await GetErrorResponseAsync(responseMessage, cancellationToken).ConfigureAwait(false));
 			case HttpStatusCode.NotFound:
-				throw new NotFoundException(errorResponse);
+				throw new NotFoundException(await GetErrorResponseAsync(responseMessage, cancellationToken).ConfigureAwait(false));
 		}
 	}
+
+	private static async Task<ErrorResponse> GetErrorResponseAsync(HttpResponseMessage responseMessage, CancellationToken cancellationToken)
+		=> (await responseMessage
+			.Content
+			   .ReadFromJsonAsync<ErrorResponse>(cancellationToken).ConfigureAwait(false)
+		) ?? throw new FormatException("API returned an invalid error response.");
 
 	private async Task<BearerToken> GetBearerTokenAsync(CancellationToken cancellationToken)
 	{
