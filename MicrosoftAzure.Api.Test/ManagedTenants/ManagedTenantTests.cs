@@ -7,7 +7,7 @@ public class ManagedTenantTests(ITestOutputHelper testOutputHelper) : TestBase(t
 	{
 		var response = await Client
 			.ManagedTenants
-			.GetManagedTenantsAsync(default)
+			.GetAsync(default)
 			.ConfigureAwait(true);
 
 		response.Should().NotBeNull();

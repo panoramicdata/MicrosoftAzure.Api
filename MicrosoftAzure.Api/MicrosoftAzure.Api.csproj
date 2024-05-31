@@ -24,7 +24,8 @@
 		<RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api/</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReleaseNotes>
-			Restructured.
+			Bumped version for breaking changes.
+			Improved filtering.
 		</PackageReleaseNotes>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>

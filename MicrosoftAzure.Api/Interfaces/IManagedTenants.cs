@@ -12,5 +12,5 @@ public interface IManagedTenants
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	[Get("/beta/tenantRelationships/managedTenants/tenants")]
-	Task<PlainResponse<Tenant>> GetManagedTenantsAsync(CancellationToken cancellationToken);
+	Task<PlainResponse<Tenant>> GetAsync(CancellationToken cancellationToken);
 }

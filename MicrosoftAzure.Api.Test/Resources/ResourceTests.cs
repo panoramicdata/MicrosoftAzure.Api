@@ -3,11 +3,11 @@
 public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOutputHelper)
 {
 	[Fact]
-	public async Task GetResourceGroupsAsync_Succeeds()
+	public async Task GetResourcesAsync_Succeeds()
 	{
 		var response = await Client
 			.Resources
-			.GetResourceGroupsAsync(
+			.GetAsync(
 				TestConfig.SubscriptionId,
 				default)
 			.ConfigureAwait(true);
@@ -17,17 +17,19 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	}
 
 	[Fact]
-	public async Task GetResourcesAsync_Succeeds()
+	public async Task GetResourcesAsync_WithFilter_Succeeds()
 	{
 		var response = await Client
 			.Resources
-			.GetResourcesAsync(
+			.GetAsync(
 				TestConfig.SubscriptionId,
-				default)
+				filter: "resourceType eq 'Microsoft.OperationalInsights/workspaces'",
+				cancellationToken: default
+				)
 			.ConfigureAwait(true);
 
 		response.Should().NotBeNull();
 		response.Values.Should().NotBeNullOrEmpty();
+		response.Values.Should().OnlyContain(x => x.Type == "Microsoft.OperationalInsights/workspaces");
 	}
 }
-

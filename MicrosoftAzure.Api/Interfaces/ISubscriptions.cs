@@ -12,5 +12,5 @@ public interface ISubscriptions
 	/// <param name="cancellationToken"></param>
 	/// <returns></returns>
 	[Get("/subscriptions?api-version=2016-06-01")]
-	Task<PlainResponse<Subscription>> GetSubscriptionsAsync(CancellationToken cancellationToken);
+	Task<PlainResponse<Subscription>> GetAsync(CancellationToken cancellationToken);
 }
