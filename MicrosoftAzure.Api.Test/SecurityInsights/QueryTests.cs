@@ -10,6 +10,7 @@ public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutpu
 		var result = await Client
 			.LogAnalytics
 			.QueryAsync(
+				TestConfig.WorkspaceId,
 				new QueryRequest
 				{
 					Query = "union * | where TimeGenerated > ago(1h) | summarize count() by Type, TenantId"
@@ -26,6 +27,7 @@ public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutpu
 		var result = await Client
 			.LogAnalytics
 			.QueryAsync(
+				TestConfig.WorkspaceId,
 				new QueryRequest
 				{
 					Query = "SigninLogs | take 5"

@@ -18,7 +18,7 @@ public class MicrosoftAzureClient : IDisposable
 		ArgumentNullException.ThrowIfNull(options, nameof(options));
 		options.Validate();
 
-		var logAnalyticsBaseAddress = new Uri($"https://api.loganalytics.io/v1/workspaces/{options.WorkspaceId}/");
+		var logAnalyticsBaseAddress = new Uri($"https://api.loganalytics.io/v1/workspaces/");
 		_logAnalyticsHandler = new CustomHttpClientHandler(options, logAnalyticsBaseAddress);
 		_logAnalyticsHttpClient = new HttpClient(_logAnalyticsHandler)
 		{
@@ -48,6 +48,7 @@ public class MicrosoftAzureClient : IDisposable
 		Tenants = RestService.For<ITenants>(_managementHttpClient);
 	}
 
+	// Can be null if WorkspaceId is not set
 	public ILogAnalytics LogAnalytics { get; }
 
 	public IManagedTenants ManagedTenants { get; }

@@ -21,11 +21,6 @@ public class MicrosoftAzureClientOptions
 	public required string ClientSecret { get; set; }
 
 	/// <summary>
-	/// The sentinel workspace id
-	/// </summary>
-	public required Guid WorkspaceId { get; set; }
-
-	/// <summary>
 	/// An optional logger
 	/// </summary>
 	public ILogger Logger { get; set; } = NullLogger.Instance;
@@ -49,11 +44,6 @@ public class MicrosoftAzureClientOptions
 		if (string.IsNullOrWhiteSpace(ClientSecret))
 		{
 			throw new ConfigurationException($"{nameof(ClientSecret)} must be set.");
-		}
-
-		if (WorkspaceId == Guid.Empty)
-		{
-			throw new ConfigurationException($"{nameof(WorkspaceId)} must be set.");
 		}
 	}
 }

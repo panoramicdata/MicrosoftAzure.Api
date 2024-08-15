@@ -28,6 +28,9 @@ public class TestBase
 			.Subscriptions
 			.GetAsync(cancellationToken)
 			.ConfigureAwait(false);
+
+		response.Values.Should().NotBeNullOrEmpty();
+
 		return response.Values.Take(TestConfig.MaxSubscriptionTake).Select(s => new Guid(s.Id.Split('/').Last()));
 	}
 }
