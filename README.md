@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7c55bd140e544652a4a8ed1a0ed9e729)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=panoramicdata/MicrosoftAzureSentinel.Api&amp;utm_campaign=Badge_Grade)
 
-A simple Microsoft Azure Sentinel API nuget package.
+A simple Microsoft Azure API nuget package.
 
 Makes calls to endpoints set out here:
 * LogAnalytics Query API:
@@ -21,6 +21,7 @@ using MicrosoftAzure.Api;
 var subscriptionId = new Guid("your-subscription-id");
 var resourceGroupName = "your-resource-group-name";
 var workspaceName = "your-workspace-name";
+var workspaceId = getWorkSpaceIdGuid();
 
 var client = new MicrosoftAzureSentinelClient(new MicrosoftAzureSentinelClientOptions
 {
@@ -32,6 +33,7 @@ var client = new MicrosoftAzureSentinelClient(new MicrosoftAzureSentinelClientOp
 var signInLogs = await Client
 	.SecurityInsights
 	.QueryAsync(
+		workspaceId,
 		new QueryRequest
 		{
 			Query = "SigninLogs | take 5"
