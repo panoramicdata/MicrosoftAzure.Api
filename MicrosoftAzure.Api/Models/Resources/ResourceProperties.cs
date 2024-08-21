@@ -5,7 +5,7 @@ namespace MicrosoftAzure.Api.Models.Resources;
 public class ResourceProperties
 {
 	[JsonPropertyName("customerId")]
-	public required string CustomerId { get; set; }
+	public required Guid CustomerId { get; set; }
 
 	[JsonPropertyName("provisioningState")]
 	public required string ProvisioningState { get; set; }
