@@ -5,20 +5,20 @@ namespace MicrosoftAzure.Api.Models.Resources;
 public class SystemData
 {
 	[JsonPropertyName("createdBy")]
-	public required string CreatedBy { get; set; }
+	public string? CreatedBy { get; set; }
 
 	[JsonPropertyName("createdByType")]
-	public required string CreatedByType { get; set; }
+	public string? CreatedByType { get; set; }
 
 	[JsonPropertyName("createdAt")]
-	public required DateTime CreatedAt { get; set; }
+	public DateTime? CreatedAt { get; set; }
 
 	[JsonPropertyName("lastModifiedBy")]
-	public required string LastModifiedBy { get; set; }
+	public string? LastModifiedBy { get; set; }
 
 	[JsonPropertyName("lastModifiedByType")]
-	public required string LastModifiedByType { get; set; }
+	public string? LastModifiedByType { get; set; }
 
 	[JsonPropertyName("lastModifiedAt")]
-	public required DateTime LastModifiedAt { get; set; }
+	public DateTime? LastModifiedAt { get; set; }
 }
