@@ -41,7 +41,7 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 
 				foreach (var resource in response.Values)
 				{
-					// The resource id will be in the form: /subscriptions/93b40bf7-c109-4b1f-a0ff-8b594212a646/resourceGroups/prodloganalyticsrg/providers/Microsoft.OperationalInsights/workspaces/GCGLogAnalytics
+					// The resource id will be in the form: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRgName/providers/Microsoft.OperationalInsights/workspaces/MyWorkspaceName
 					var resourceParts = resource.Id.Split('/');
 					resourceParts.Should().NotBeNullOrEmpty();
 					resourceParts.Length.Should().Be(9);
