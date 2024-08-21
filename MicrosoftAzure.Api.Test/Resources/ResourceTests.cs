@@ -38,6 +38,28 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 			if (response.Values.Count != 0)
 			{
 				response.Values.Should().OnlyContain(x => x.Type == "Microsoft.OperationalInsights/workspaces");
+
+				foreach (var resource in response.Values)
+				{
+					// The resource id will be in the form: /subscriptions/93b40bf7-c109-4b1f-a0ff-8b594212a646/resourceGroups/prodloganalyticsrg/providers/Microsoft.OperationalInsights/workspaces/GCGLogAnalytics
+					var resourceParts = resource.Id.Split('/');
+					resourceParts.Should().NotBeNullOrEmpty();
+					resourceParts.Length.Should().Be(9);
+
+					var resourceGroupName = resourceParts[4];
+					var providerName = resourceParts[6];
+					var workspaceName = resourceParts[8];
+
+					var resourceResponse = await Client
+						.Resources
+						.GetPropertiesAsync(
+							subscriptionId,
+							resourceGroupName,
+							providerName,
+							workspaceName,
+							default)
+						.ConfigureAwait(true);
+				}
 			}
 		}
 	}

@@ -16,8 +16,11 @@ public interface IResources
 	[AliasAs("$take")] int? take = default,
 	CancellationToken cancellationToken = default);
 
-	[Get("/subscriptions/{subscriptionId}/resources?api-version=2024-03-01")]
-	Task<PlainResponse<Resource>> GetAsync(
+	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/workspaces/{workspaceName}?api-version=2023-09-01")]
+	Task<ResourcePropertiesResponse> GetPropertiesAsync(
 		Guid subscriptionId,
+		string resourceGroupName,
+		string providerName,
+		string workspaceName,
 		CancellationToken cancellationToken);
 }
