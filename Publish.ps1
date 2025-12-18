@@ -83,13 +83,9 @@ Write-Host "nuget-key.txt is valid and gitignored." -ForegroundColor Green
 # Step 4: Run unit tests (unless -SkipTests is specified)
 if (-not $SkipTests) {
     Write-Step "Running unit tests"
-    dotnet test --configuration Release --no-build 2>&1
+    dotnet test --configuration Release
     if ($LASTEXITCODE -ne 0) {
-        # Try with build
-        dotnet test --configuration Release 2>&1
-        if ($LASTEXITCODE -ne 0) {
-            Exit-WithError "Unit tests failed."
-        }
+        Exit-WithError "Unit tests failed."
     }
     Write-Host "All tests passed." -ForegroundColor Green
 }
@@ -100,7 +96,15 @@ else {
 # Step 5: Build and pack the project
 Write-Step "Building and packing the project"
 $projectPath = Join-Path $solutionRoot "MicrosoftAzure.Api\MicrosoftAzure.Api.csproj"
-dotnet pack $projectPath --configuration Release --output "$solutionRoot\artifacts" 2>&1
+
+# Clean artifacts folder
+$artifactsPath = Join-Path $solutionRoot "artifacts"
+if (Test-Path $artifactsPath) {
+    Remove-Item -Path $artifactsPath -Recurse -Force
+}
+
+# Pack includes build
+dotnet pack $projectPath --configuration Release --output $artifactsPath
 if ($LASTEXITCODE -ne 0) {
     Exit-WithError "Failed to pack the project."
 }
@@ -108,20 +112,17 @@ Write-Host "Package created successfully." -ForegroundColor Green
 
 # Step 6: Publish to NuGet.org
 Write-Step "Publishing to NuGet.org"
-$packagePath = Join-Path $solutionRoot "artifacts\MicrosoftAzure.Api.$nugetVersion.nupkg"
-if (-not (Test-Path $packagePath)) {
-    # Try to find the package
-    $packagePath = Get-ChildItem -Path "$solutionRoot\artifacts" -Filter "MicrosoftAzure.Api.*.nupkg" | 
-        Where-Object { $_.Name -notlike "*.symbols.*" } |
-        Sort-Object LastWriteTime -Descending | 
-        Select-Object -First 1 -ExpandProperty FullName
-    if (-not $packagePath) {
-        Exit-WithError "Could not find NuGet package in artifacts folder."
-    }
+$packagePath = Get-ChildItem -Path $artifactsPath -Filter "MicrosoftAzure.Api.*.nupkg" | 
+    Where-Object { $_.Name -notlike "*.symbols.*" } |
+    Sort-Object LastWriteTime -Descending | 
+    Select-Object -First 1 -ExpandProperty FullName
+
+if (-not $packagePath) {
+    Exit-WithError "Could not find NuGet package in artifacts folder."
 }
 
 Write-Host "Publishing package: $packagePath"
-dotnet nuget push $packagePath --api-key $nugetKey --source "https://api.nuget.org/v3/index.json" --skip-duplicate 2>&1
+dotnet nuget push $packagePath --api-key $nugetKey --source "https://api.nuget.org/v3/index.json" --skip-duplicate
 if ($LASTEXITCODE -ne 0) {
     Exit-WithError "Failed to publish package to NuGet.org."
 }
