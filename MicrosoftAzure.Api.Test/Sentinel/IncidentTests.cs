@@ -9,12 +9,11 @@ public class IncidentTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	[Fact]
 	public async Task GetAllAsync_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var resourceGroups = await Client
 				.ResourceGroups
-				.GetAsync(subscriptionId, default)
-				.ConfigureAwait(true);
+				.GetAsync(subscriptionId, CancellationToken);
 
 			var resourceGroupNames = resourceGroups
 				.Values
@@ -27,8 +26,8 @@ public class IncidentTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 					.Resources
 					.GetAsync(
 						subscriptionId,
-						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'", default)
-					.ConfigureAwait(true);
+						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'",
+						cancellationToken: CancellationToken);
 
 				var workspaceNames = workspaces
 					.Values
@@ -45,9 +44,7 @@ public class IncidentTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 								subscriptionId,
 								resourceGroupName,
 								workspaceName,
-								default
-							)
-							.ConfigureAwait(true);
+								CancellationToken);
 
 						response.CheckValues();
 					}

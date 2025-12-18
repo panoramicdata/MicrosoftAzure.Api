@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace MicrosoftAzure.Api;
 
-internal class LogAnalytics(HttpClient logAnalyticsHttpClient) : ILogAnalytics
+internal sealed class LogAnalytics(HttpClient logAnalyticsHttpClient) : ILogAnalytics
 {
 	public async Task<QueryResponse> QueryAsync(
 	Guid workspaceId,

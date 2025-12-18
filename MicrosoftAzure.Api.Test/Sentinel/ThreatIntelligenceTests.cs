@@ -9,12 +9,11 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 	[Fact]
 	public async Task GetIndicatorsAsync_SimpleQuery_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var resourceGroups = await Client
 				.ResourceGroups
-				.GetAsync(subscriptionId, default)
-				.ConfigureAwait(true);
+				.GetAsync(subscriptionId, CancellationToken);
 
 			var resourceGroupNames = resourceGroups
 				.Values
@@ -27,8 +26,8 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 					.Resources
 					.GetAsync(
 						subscriptionId,
-						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'", default)
-					.ConfigureAwait(true);
+						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'",
+						cancellationToken: CancellationToken);
 
 				var workspaceNames = workspaces
 					.Values
@@ -45,9 +44,7 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 								subscriptionId,
 								resourceGroupName,
 								workspaceName,
-								default
-							)
-							.ConfigureAwait(true);
+								CancellationToken);
 
 						response.CheckValues();
 						if (response.Values.Count > 0)
@@ -74,12 +71,11 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 	[Fact]
 	public async Task GetMetricsAsync_SimpleQuery_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var resourceGroups = await Client
 				.ResourceGroups
-				.GetAsync(subscriptionId, default)
-				.ConfigureAwait(true);
+				.GetAsync(subscriptionId, CancellationToken);
 
 			var resourceGroupNames = resourceGroups
 				.Values
@@ -92,8 +88,8 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 					.Resources
 					.GetAsync(
 						subscriptionId,
-						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'", default)
-					.ConfigureAwait(true);
+						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'",
+						cancellationToken: CancellationToken);
 
 				var workspaceNames = workspaces
 					.Values
@@ -110,9 +106,7 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 								subscriptionId,
 								resourceGroupName,
 								workspaceName,
-								default
-							)
-							.ConfigureAwait(true);
+								CancellationToken);
 						response.Should().NotBeNull();
 						response.Values.First().Properties.Should().NotBeNull();
 					}
@@ -135,12 +129,11 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 	[Fact]
 	public async Task GetWorkspacesAsync_SimpleQuery_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var resourceGroups = await Client
 				.ResourceGroups
-				.GetAsync(subscriptionId, default)
-				.ConfigureAwait(true);
+				.GetAsync(subscriptionId, CancellationToken);
 
 			var resourceGroupNames = resourceGroups
 				.Values
@@ -153,8 +146,8 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 					.Resources
 					.GetAsync(
 						subscriptionId,
-						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'", default)
-					.ConfigureAwait(true);
+						filter: $"resourceGroup eq '{resourceGroupName}' and resourceType eq 'Microsoft.OperationalInsights/workspaces'",
+						cancellationToken: CancellationToken);
 
 				var workspaceNames = workspaces
 					.Values
@@ -170,9 +163,7 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : TestB
 							.GetWorkspacesAsync(
 								subscriptionId,
 								resourceGroupName,
-								default
-							)
-							.ConfigureAwait(true);
+								CancellationToken);
 
 						response.Should().NotBeNull();
 						response.Values.First().Properties.Should().NotBeNull();

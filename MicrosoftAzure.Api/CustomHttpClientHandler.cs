@@ -1,6 +1,4 @@
-﻿
-
-using MicrosoftAzure.Api.Extensions;
+﻿using MicrosoftAzure.Api.Extensions;
 using MicrosoftAzure.Api.Models.Responses;
 using System.Globalization;
 using System.Net;
@@ -8,12 +6,19 @@ using System.Net.Http.Json;
 
 namespace MicrosoftAzure.Api;
 
-internal class CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri baseAddress) : HttpClientHandler
+internal sealed class CustomHttpClientHandler : HttpClientHandler
 {
-	private readonly MicrosoftAzureClientOptions _options = options;
-	private readonly Uri _resource = new(baseAddress.GetLeftPart(UriPartial.Authority));
+	private readonly MicrosoftAzureClientOptions _options;
+	private readonly Uri _resource;
 
 	private BearerToken? _bearerToken;
+
+	public CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri baseAddress)
+	{
+		_options = options;
+		_resource = new(baseAddress.GetLeftPart(UriPartial.Authority));
+		CheckCertificateRevocationList = true;
+	}
 
 	protected override async Task<HttpResponseMessage> SendAsync(
 		HttpRequestMessage request,
@@ -83,7 +88,11 @@ internal class CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri 
 			return _bearerToken;
 		}
 
-		using var authHttpClient = new HttpClient
+		using var authHandler = new HttpClientHandler
+		{
+			CheckCertificateRevocationList = true
+		};
+		using var authHttpClient = new HttpClient(authHandler)
 		{
 			BaseAddress = new Uri($"https://login.microsoftonline.com/{_options.TenantId}/oauth2/token")
 		};

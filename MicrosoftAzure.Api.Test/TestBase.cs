@@ -7,20 +7,30 @@ namespace MicrosoftAzure.Api.Test;
 
 public class TestBase
 {
-	private MicrosoftAzureClient? _client;
+	private readonly ILoggerFactory _loggerFactory;
 
 	protected TestConfig TestConfig { get; }
+
+	protected static CancellationToken CancellationToken => TestContext.Current.CancellationToken;
 
 	protected ILogger Logger { get; }
 
 	public TestBase(ITestOutputHelper testOutputHelper)
 	{
-		Logger = testOutputHelper.BuildLoggerFor<TestBase>();
+		_ = testOutputHelper; // Kept for compatibility with derived test classes
+		_loggerFactory = LoggerFactory.Create(builder =>
+		{
+			builder
+				.AddDebug()
+				.AddFilter(level => level >= LogLevel.Debug);
+		});
+
+		Logger = _loggerFactory.CreateLogger<TestBase>();
 		TestConfig = TestConfig.Load();
-		TestConfig.Options.Logger = testOutputHelper.BuildLoggerFor<MicrosoftAzureClient>();
+		TestConfig.Options.Logger = _loggerFactory.CreateLogger<MicrosoftAzureClient>();
 	}
 
-	protected MicrosoftAzureClient Client => _client ??= new(TestConfig.Options);
+	protected MicrosoftAzureClient Client => field ??= new(TestConfig.Options);
 
 	protected async Task<IEnumerable<Guid>> GetSubscriptionIdsAsync(CancellationToken cancellationToken)
 	{

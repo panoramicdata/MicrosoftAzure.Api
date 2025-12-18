@@ -5,14 +5,13 @@ public class ResourceGroupTests(ITestOutputHelper testOutputHelper) : TestBase(t
 	[Fact]
 	public async Task GetResourceGroupsAsync_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var response = await Client
 				.ResourceGroups
 				.GetAsync(
 					subscriptionId,
-					default)
-				.ConfigureAwait(true);
+					CancellationToken);
 
 			response.Should().NotBeNull();
 			response.Values.Should().NotBeNullOrEmpty();

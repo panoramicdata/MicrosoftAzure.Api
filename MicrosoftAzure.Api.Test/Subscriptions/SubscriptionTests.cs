@@ -7,8 +7,7 @@ public class SubscriptionTests(ITestOutputHelper testOutputHelper) : TestBase(te
 	{
 		var response = await Client
 			.Subscriptions
-			.GetAsync(default)
-			.ConfigureAwait(true);
+			.GetAsync(CancellationToken);
 
 		response.Should().NotBeNull();
 		response.Values.Should().NotBeNullOrEmpty();

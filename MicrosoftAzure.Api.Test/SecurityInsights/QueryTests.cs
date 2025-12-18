@@ -15,9 +15,7 @@ public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutpu
 				{
 					Query = "union * | where TimeGenerated > ago(1h) | summarize count() by Type, TenantId"
 				},
-				default
-			)
-			.ConfigureAwait(true);
+				CancellationToken);
 		result.Should().BeOfType<QueryResponse>();
 	}
 
@@ -32,9 +30,7 @@ public class QueryTests(ITestOutputHelper testOutputHelper) : TestBase(testOutpu
 				{
 					Query = "SigninLogs | take 5"
 				},
-				default
-			)
-			.ConfigureAwait(true);
+				CancellationToken);
 		result.Should().BeOfType<QueryResponse>();
 	}
 }

@@ -13,3 +13,10 @@ using System.Diagnostics.CodeAnalysis;
 	Scope = "namespaceanddescendants",
 	Target = "~N:MicrosoftAzure.Api")
 ]
+[assembly: SuppressMessage(
+	"Security",
+	"CA5399:HttpClient is created without enabling CheckCertificateRevocationList",
+	Justification = "CheckCertificateRevocationList is enabled in CustomHttpClientHandler constructor",
+	Scope = "member",
+	Target = "~M:MicrosoftAzure.Api.MicrosoftAzureClient.#ctor(MicrosoftAzure.Api.MicrosoftAzureClientOptions)")
+]

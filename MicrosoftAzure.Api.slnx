@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="nuget-key.txt" />
+    <File Path="README.md" />
+    <File Path="version.json" />
+  </Folder>
+  <Project Path="MicrosoftAzure.Api.Test/MicrosoftAzure.Api.Test.csproj" />
+  <Project Path="MicrosoftAzure.Api/MicrosoftAzure.Api.csproj" />
+</Solution>

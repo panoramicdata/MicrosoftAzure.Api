@@ -5,14 +5,13 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	[Fact]
 	public async Task GetResourcesAsync_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var response = await Client
 				.Resources
 				.GetAsync(
 					subscriptionId,
-					default)
-				.ConfigureAwait(true);
+					cancellationToken: CancellationToken);
 
 			response.Should().NotBeNull();
 			response.Values.Should().NotBeNullOrEmpty();
@@ -22,16 +21,14 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 	[Fact]
 	public async Task GetResourcesAsync_WithFilter_Succeeds()
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(default).ConfigureAwait(true))
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(CancellationToken))
 		{
 			var response = await Client
-			.Resources
-			.GetAsync(
-				subscriptionId,
-				filter: "resourceType eq 'Microsoft.OperationalInsights/workspaces'",
-				cancellationToken: default
-				)
-			.ConfigureAwait(true);
+				.Resources
+				.GetAsync(
+					subscriptionId,
+					filter: "resourceType eq 'Microsoft.OperationalInsights/workspaces'",
+					cancellationToken: CancellationToken);
 
 			response.Should().NotBeNull();
 			response.Values.Should().NotBeNull();
@@ -44,7 +41,7 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 					// The resource id will be in the form: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRgName/providers/Microsoft.OperationalInsights/workspaces/MyWorkspaceName
 					var resourceParts = resource.Id.Split('/');
 					resourceParts.Should().NotBeNullOrEmpty();
-					resourceParts.Length.Should().Be(9);
+					resourceParts.Should().HaveCount(9);
 
 					var resourceGroupName = resourceParts[4];
 					var providerName = resourceParts[6];
@@ -57,8 +54,7 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 							resourceGroupName,
 							providerName,
 							workspaceName,
-							default)
-						.ConfigureAwait(true);
+							CancellationToken);
 				}
 			}
 		}

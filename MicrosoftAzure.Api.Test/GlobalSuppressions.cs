@@ -21,3 +21,10 @@ using System.Diagnostics.CodeAnalysis;
 	Scope = "namespaceanddescendants",
 	Target = "~N:MicrosoftAzure.Api.Test")
 ]
+[assembly: SuppressMessage(
+	"Design",
+	"CA1515:Consider making public types internal",
+	Justification = "Test classes must be public for xUnit discovery",
+	Scope = "namespaceanddescendants",
+	Target = "~N:MicrosoftAzure.Api.Test")
+]
