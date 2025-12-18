@@ -93,9 +93,18 @@ else {
     Write-Step "Skipping unit tests (-SkipTests specified)"
 }
 
-# Step 5: Build and pack the project
-Write-Step "Building and packing the project"
+# Step 5: Build the project
+Write-Step "Building the project"
 $projectPath = Join-Path $solutionRoot "MicrosoftAzure.Api\MicrosoftAzure.Api.csproj"
+
+dotnet build $projectPath --configuration Release
+if ($LASTEXITCODE -ne 0) {
+    Exit-WithError "Failed to build the project."
+}
+Write-Host "Build completed successfully." -ForegroundColor Green
+
+# Step 6: Pack the project
+Write-Step "Packing the project"
 
 # Clean artifacts folder
 $artifactsPath = Join-Path $solutionRoot "artifacts"
@@ -103,14 +112,13 @@ if (Test-Path $artifactsPath) {
     Remove-Item -Path $artifactsPath -Recurse -Force
 }
 
-# Pack includes build
-dotnet pack $projectPath --configuration Release --output $artifactsPath
+dotnet pack $projectPath --configuration Release --no-build --output $artifactsPath
 if ($LASTEXITCODE -ne 0) {
     Exit-WithError "Failed to pack the project."
 }
 Write-Host "Package created successfully." -ForegroundColor Green
 
-# Step 6: Publish to NuGet.org
+# Step 7: Publish to NuGet.org
 Write-Step "Publishing to NuGet.org"
 $packagePath = Get-ChildItem -Path $artifactsPath -Filter "MicrosoftAzure.Api.*.nupkg" | 
     Where-Object { $_.Name -notlike "*.symbols.*" } |
