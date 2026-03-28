@@ -1,28 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
-		<LangVersion>latest</LangVersion>
-		<Nullable>enable</Nullable>
-		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisMode>All</AnalysisMode>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
-		<Authors>Panoramic Data Limited</Authors>
-		<PackageProjectUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api/</PackageProjectUrl>
-		<Copyright>Copyright © Panoramic Data Limited 2024</Copyright>
-		<PackageLicenseUrl></PackageLicenseUrl>
+		<PackageProjectUrl>https://github.com/panoramicdata/MicrosoftAzure.Api/</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageIcon>Icon.png</PackageIcon>
 		<PackageTags>Microsoft Azure API REST</PackageTags>
 		<Title>MicrosoftAzure.Api</Title>
 		<Description>A .NET API for Microsoft Azure</Description>
 		<Summary>A .NET API for Microsoft Azure</Summary>
-		<Company>Panoramic Data Limited</Company>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<LangVersion>latest</LangVersion>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api/</RepositoryUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzure.Api/</RepositoryUrl>
 		<PackageReleaseNotes>
 			Bumped version for breaking changes.
 			Improved filtering.
@@ -30,18 +20,14 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
-		<PackageReference Include="Refit" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+		<PackageReference Include="Refit" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\README.md" Pack="true" PackagePath="\" />
 		<None Include="Icon.png" Pack="true" PackagePath="" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Update="Nerdbank.GitVersioning" Version="3.9.50" />
 	</ItemGroup>
 </Project>

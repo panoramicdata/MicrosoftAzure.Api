@@ -3,9 +3,9 @@
 [![Nuget](https://img.shields.io/nuget/v/MicrosoftAzure.Api)](https://www.nuget.org/packages/MicrosoftAzure.Api/)
 [![Nuget](https://img.shields.io/nuget/dt/MicrosoftAzure.Api)](https://www.nuget.org/packages/MicrosoftAzure.Api/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7c55bd140e544652a4a8ed1a0ed9e729)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=panoramicdata/MicrosoftAzureSentinel.Api&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7c55bd140e544652a4a8ed1a0ed9e729)](https://app.codacy.com/gh/panoramicdata/MicrosoftAzure.Api/dashboard?utm_source=gh&utm_medium=referral&utm_content=panoramicdata/MicrosoftAzure.Api&utm_campaign=Badge_Grade)
 
-A simple Microsoft Azure API nuget package.
+A .NET API for Microsoft Azure.
 
 Makes calls to endpoints set out here:
 * LogAnalytics Query API:
@@ -23,32 +23,30 @@ var resourceGroupName = "your-resource-group-name";
 var workspaceName = "your-workspace-name";
 var workspaceId = getWorkSpaceIdGuid();
 
-var client = new MicrosoftAzureSentinelClient(new MicrosoftAzureSentinelClientOptions
+var client = new MicrosoftAzureClient(new MicrosoftAzureClientOptions
 {
-	TenantId = "your-tenant-id",
-	ClientId = "your-client-id",
+	TenantId = Guid.Parse("your-tenant-id"),
+	ClientId = Guid.Parse("your-client-id"),
 	ClientSecret = "your-client-secret"
 });
 
-var signInLogs = await Client
-	.SecurityInsights
+var signInLogs = await client
+	.LogAnalytics
 	.QueryAsync(
 		workspaceId,
 		new QueryRequest
 		{
 			Query = "SigninLogs | take 5"
 		},
-		default
-	)
+		default)
 	.ConfigureAwait(true);
 
-var connectors = await Client
+var connectors = await client
 	.Sentinel
 	.GetConnectorsAsync(
 		subscriptionId,
 		resourceGroupName,
 		workspaceName,
-		default
-	)
+		default)
 	.ConfigureAwait(true);
 ```
