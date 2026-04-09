@@ -1,11 +1,17 @@
-﻿using MicrosoftAzure.Api.Models.Responses;
+using MicrosoftAzure.Api.Models.Responses;
 using MicrosoftAzure.Api.Models.Sentinel;
 using Refit;
 
 namespace MicrosoftAzure.Api.Interfaces;
 
+/// <summary>
+/// Defines the contract for sentinel operations.
+/// </summary>
 public interface ISentinel
 {
+	/// <summary>
+	/// Gets the data connectors.
+	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors?api-version=2024-03-01")]
 	Task<Response<DataConnector>> GetDataConnectorsAsync(
 		Guid subscriptionId,
@@ -13,6 +19,9 @@ public interface ISentinel
 		string workspaceName,
 		CancellationToken cancellationToken);
 
+	/// <summary>
+	/// Gets the alert rules.
+	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules?api-version=2024-03-01")]
 	Task<Response<AlertRule>> GetAlertRulesAsync(
 		Guid subscriptionId,
@@ -20,6 +29,9 @@ public interface ISentinel
 		string workspaceName,
 		CancellationToken cancellationToken);
 
+	/// <summary>
+	/// Gets the incidents.
+	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents?api-version=2024-03-01")]
 	Task<Response<Incident>> GetIncidentsAsync(
 		Guid subscriptionId,
@@ -27,6 +39,9 @@ public interface ISentinel
 		string workspaceName,
 		CancellationToken cancellationToken);
 
+	/// <summary>
+	/// Gets the threat indicators.
+	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators?api-version=2024-03-01")]
 	Task<Response<ThreatIntelligenceIndicator>> GetThreatIndicatorsAsync(
 		Guid subscriptionId,
@@ -34,6 +49,9 @@ public interface ISentinel
 		string workspaceName,
 		CancellationToken cancellationToken);
 
+	/// <summary>
+	/// Gets the threat indicator metrics.
+	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/metrics?api-version=2024-03-01")]
 	Task<SimpleResponse<ThreatIntelligenceMetric>> GetThreatIndicatorMetricsAsync(
 		Guid subscriptionId,
@@ -42,6 +60,9 @@ public interface ISentinel
 		CancellationToken cancellationToken);
 
 
+	/// <summary>
+	/// Gets the workspaces.
+	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces?api-version=2024-03-01")]
 	Task<Response<Workspace>> GetWorkspacesAsync(
 		Guid subscriptionId,

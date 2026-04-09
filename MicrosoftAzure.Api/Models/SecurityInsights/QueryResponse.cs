@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MicrosoftAzure.Api.Models.SecurityInsights;
 
+/// <summary>
+/// Represents the query response.
+/// </summary>
 public class QueryResponse
 {
+	/// <summary>
+	/// Gets or sets the tables.
+	/// </summary>
 	[JsonPropertyName("tables")]
 	public required IList<Table> Tables { get; init; }
 

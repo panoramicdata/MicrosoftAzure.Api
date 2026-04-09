@@ -1,8 +1,11 @@
-﻿using MicrosoftAzure.Api.Interfaces;
+using MicrosoftAzure.Api.Interfaces;
 using Refit;
 
 namespace MicrosoftAzure.Api;
 
+/// <summary>
+/// Represents the microsoft azure client.
+/// </summary>
 public class MicrosoftAzureClient : IDisposable
 {
 	private readonly CustomHttpClientHandler _logAnalyticsHandler;
@@ -13,6 +16,9 @@ public class MicrosoftAzureClient : IDisposable
 	private readonly HttpClient _graphHttpClient;
 	private bool disposedValue;
 
+	/// <summary>
+	/// Initializes a new instance of the MicrosoftAzureClient class.
+	/// </summary>
 	public MicrosoftAzureClient(MicrosoftAzureClientOptions options)
 	{
 		ArgumentNullException.ThrowIfNull(options, nameof(options));
@@ -49,20 +55,44 @@ public class MicrosoftAzureClient : IDisposable
 	}
 
 	// Can be null if WorkspaceId is not set
+	/// <summary>
+	/// Gets or sets the log analytics.
+	/// </summary>
 	public ILogAnalytics LogAnalytics { get; }
 
+	/// <summary>
+	/// Gets or sets the managed tenants.
+	/// </summary>
 	public IManagedTenants ManagedTenants { get; }
 
+	/// <summary>
+	/// Gets or sets the resource groups.
+	/// </summary>
 	public IResourceGroups ResourceGroups { get; }
 
+	/// <summary>
+	/// Gets or sets the resources.
+	/// </summary>
 	public IResources Resources { get; }
 
+	/// <summary>
+	/// Gets or sets the sentinel.
+	/// </summary>
 	public ISentinel Sentinel { get; }
 
+	/// <summary>
+	/// Gets or sets the subscriptions.
+	/// </summary>
 	public ISubscriptions Subscriptions { get; }
 
+	/// <summary>
+	/// Gets or sets the tenants.
+	/// </summary>
 	public ITenants Tenants { get; }
 
+	/// <summary>
+	/// Executes the dispose operation.
+	/// </summary>
 	protected virtual void Dispose(bool disposing)
 	{
 		if (!disposedValue)
@@ -81,6 +111,9 @@ public class MicrosoftAzureClient : IDisposable
 		}
 	}
 
+	/// <summary>
+	/// Executes the dispose operation.
+	/// </summary>
 	public void Dispose()
 	{
 		// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
