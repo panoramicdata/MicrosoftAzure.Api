@@ -10,7 +10,7 @@
         <PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50" />
 
         <!-- Main project -->
-        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.6" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.7" />
         <PackageVersion Include="Refit" Version="10.1.6" />
 
         <!-- Test project -->
