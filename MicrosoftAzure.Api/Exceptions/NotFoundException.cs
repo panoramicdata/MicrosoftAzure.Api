@@ -12,7 +12,7 @@ public class NotFoundException : ErrorException
 	/// <summary>
 	/// Initializes a new instance of the NotFoundException class.
 	/// </summary>
-	public NotFoundException() : base()
+	public NotFoundException()
 	{
 	}
 

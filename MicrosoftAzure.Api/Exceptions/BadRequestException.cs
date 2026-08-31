@@ -12,7 +12,7 @@ public class BadRequestException : ErrorException
 	/// <summary>
 	/// Initializes a new instance of the BadRequestException class.
 	/// </summary>
-	public BadRequestException() : base()
+	public BadRequestException()
 	{
 	}
 

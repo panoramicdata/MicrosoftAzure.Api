@@ -7,8 +7,6 @@ namespace MicrosoftAzure.Api.Test;
 
 public class TestBase
 {
-	private readonly ILoggerFactory _loggerFactory;
-
 	protected TestConfig TestConfig { get; }
 
 	protected static CancellationToken CancellationToken => TestContext.Current.CancellationToken;
@@ -18,16 +16,16 @@ public class TestBase
 	public TestBase(ITestOutputHelper testOutputHelper)
 	{
 		_ = testOutputHelper; // Kept for compatibility with derived test classes
-		_loggerFactory = LoggerFactory.Create(builder =>
+		var loggerFactory = LoggerFactory.Create(builder =>
 		{
 			builder
 				.AddDebug()
 				.AddFilter(level => level >= LogLevel.Debug);
 		});
 
-		Logger = _loggerFactory.CreateLogger<TestBase>();
+		Logger = loggerFactory.CreateLogger<TestBase>();
 		TestConfig = TestConfig.Load();
-		TestConfig.Options.Logger = _loggerFactory.CreateLogger<MicrosoftAzureClient>();
+		TestConfig.Options.Logger = loggerFactory.CreateLogger<MicrosoftAzureClient>();
 	}
 
 	protected MicrosoftAzureClient Client => field ??= new(TestConfig.Options);

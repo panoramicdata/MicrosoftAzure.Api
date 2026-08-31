@@ -1,3 +1,6 @@
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+	'PSAvoidUsingWriteHost', '',
+	Justification = 'This script is only ever run interactively, and uses coloured console output to make the outcome of a publish obvious.')]
 param(
 	# Skips waiting for the release run. The tag is still pushed, but nothing confirms a package
 	# reached nuget.org — use it only if you are checking the run yourself.

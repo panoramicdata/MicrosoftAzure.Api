@@ -15,7 +15,7 @@ public abstract class ErrorException : Exception
 	/// <summary>
 	/// Initializes a new instance of the ErrorException class.
 	/// </summary>
-	protected ErrorException() : base()
+	protected ErrorException()
 	{
 		ErrorResponse = new()
 		{

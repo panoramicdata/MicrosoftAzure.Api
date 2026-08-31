@@ -55,6 +55,8 @@ public class ResourceTests(ITestOutputHelper testOutputHelper) : TestBase(testOu
 							providerName,
 							workspaceName,
 							CancellationToken);
+
+					resourceResponse.Should().NotBeNull();
 				}
 			}
 		}

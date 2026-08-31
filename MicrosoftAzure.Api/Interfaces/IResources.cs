@@ -15,12 +15,29 @@ public interface IResources
 	/// </summary>
 	[Get("/subscriptions/{subscriptionId}/resources?api-version=2024-03-01")]
 	Task<PlainResponse<Resource>> GetAsync(
-	Guid subscriptionId,
-	[AliasAs("$filter")] string? filter = default,
-	[AliasAs("$expand")] string? expand = default,
-	[AliasAs("$skip")] int? skip = default,
-	[AliasAs("$take")] int? take = default,
-	CancellationToken cancellationToken = default);
+		Guid subscriptionId,
+		CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Executes the get operation, restricted by a filter.
+	/// </summary>
+	[Get("/subscriptions/{subscriptionId}/resources?api-version=2024-03-01")]
+	Task<PlainResponse<Resource>> GetAsync(
+		Guid subscriptionId,
+		[AliasAs("$filter")] string? filter,
+		CancellationToken cancellationToken);
+
+	/// <summary>
+	/// Executes the get operation, restricted by a filter, expansion and paging.
+	/// </summary>
+	[Get("/subscriptions/{subscriptionId}/resources?api-version=2024-03-01")]
+	Task<PlainResponse<Resource>> GetAsync(
+		Guid subscriptionId,
+		[AliasAs("$filter")] string? filter,
+		[AliasAs("$expand")] string? expand,
+		[AliasAs("$skip")] int? skip,
+		[AliasAs("$take")] int? take,
+		CancellationToken cancellationToken);
 
 	/// <summary>
 	/// Gets the properties.

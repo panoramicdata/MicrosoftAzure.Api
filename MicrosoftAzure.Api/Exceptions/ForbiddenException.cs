@@ -12,7 +12,7 @@ public class ForbiddenException : ErrorException
 	/// <summary>
 	/// Initializes a new instance of the ForbiddenException class.
 	/// </summary>
-	public ForbiddenException() : base()
+	public ForbiddenException()
 	{
 	}
 

@@ -12,7 +12,7 @@ public class UnauthorizedException : ErrorException
 	/// <summary>
 	/// Initializes a new instance of the UnauthorizedException class.
 	/// </summary>
-	public UnauthorizedException() : base()
+	public UnauthorizedException()
 	{
 	}
 

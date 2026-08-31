@@ -72,6 +72,9 @@ internal sealed class CustomHttpClientHandler : HttpClientHandler
 				throw new ForbiddenException(await GetErrorResponseAsync(responseMessage, cancellationToken).ConfigureAwait(false));
 			case HttpStatusCode.NotFound:
 				throw new NotFoundException(await GetErrorResponseAsync(responseMessage, cancellationToken).ConfigureAwait(false));
+			default:
+				// Any other non-success status code is left to the caller to interpret.
+				break;
 		}
 	}
 
