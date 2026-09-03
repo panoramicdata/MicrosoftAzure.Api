@@ -15,7 +15,8 @@ public class ConnectorTests(ITestOutputHelper testOutputHelper) : SentinelTestBa
 						subscriptionId,
 						resourceGroupName,
 						workspaceName,
-						CancellationToken);
+						CancellationToken)
+					.ConfigureAwait(false);
 
 				response.CheckValues();
 				response.Values.Should().OnlyContain(x => x.Kind != null);

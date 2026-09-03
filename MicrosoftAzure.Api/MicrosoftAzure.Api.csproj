@@ -14,8 +14,18 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzure.Api/</RepositoryUrl>
     <PackageReleaseNotes>
-			Bumped version for breaking changes.
-			Improved filtering.
+			Security fix: sensitive HTTP headers are now redacted in diagnostic output.
+
+			Previously the Authorization header, and therefore a usable access token, was written verbatim
+			into the Debug level request logging emitted by CustomHttpClientHandler. Any consumer running
+			at Debug retained usable credentials for the life of its log store.
+
+			Authorization, Proxy-Authorization, Cookie, Set-Cookie and common API key headers are now
+			redacted in both request and response headers, along with any vendor-prefixed variant whose
+			name ends in "Authorization". The authentication scheme and the credential length are
+			retained, so failures remain diagnosable without exposing the credential.
+
+			Consumers should upgrade and then review existing logs for previously captured tokens.
 		</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -32,5 +42,8 @@
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
     <None Include="Icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="MicrosoftAzure.Api.Test" />
   </ItemGroup>
 </Project>

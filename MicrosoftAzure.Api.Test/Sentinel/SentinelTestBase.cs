@@ -22,11 +22,14 @@ public abstract class SentinelTestBase(ITestOutputHelper testOutputHelper) : Tes
 		Func<Guid, string, string, Task> assertAsync,
 		CancellationToken cancellationToken)
 	{
-		foreach (var subscriptionId in await GetSubscriptionIdsAsync(cancellationToken))
+		ArgumentNullException.ThrowIfNull(assertAsync);
+
+		foreach (var subscriptionId in await GetSubscriptionIdsAsync(cancellationToken).ConfigureAwait(false))
 		{
 			var resourceGroups = await Client
 				.ResourceGroups
-				.GetAsync(subscriptionId, cancellationToken);
+				.GetAsync(subscriptionId, cancellationToken)
+				.ConfigureAwait(false);
 
 			var resourceGroupNames = resourceGroups
 				.Values
@@ -40,7 +43,8 @@ public abstract class SentinelTestBase(ITestOutputHelper testOutputHelper) : Tes
 					.GetAsync(
 						subscriptionId,
 						$"resourceGroup eq '{resourceGroupName}' and resourceType eq '{WorkspaceResourceType}'",
-						cancellationToken);
+						cancellationToken)
+					.ConfigureAwait(false);
 
 				var workspaceNames = workspaces
 					.Values
@@ -51,7 +55,7 @@ public abstract class SentinelTestBase(ITestOutputHelper testOutputHelper) : Tes
 				{
 					try
 					{
-						await assertAsync(subscriptionId, resourceGroupName, workspaceName);
+						await assertAsync(subscriptionId, resourceGroupName, workspaceName).ConfigureAwait(false);
 					}
 					catch (BadRequestException ex) when (IsNotSentinelWorkspace(ex))
 					{
