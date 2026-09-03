@@ -5,8 +5,12 @@ using System.Threading;
 
 namespace MicrosoftAzure.Api.Test;
 
-public class TestBase
+public class TestBase : IDisposable
 {
+	private readonly ILoggerFactory _loggerFactory;
+	private MicrosoftAzureClient? _client;
+	private bool _disposed;
+
 	protected TestConfig TestConfig { get; }
 
 	protected static CancellationToken CancellationToken => TestContext.Current.CancellationToken;
@@ -16,19 +20,19 @@ public class TestBase
 	public TestBase(ITestOutputHelper testOutputHelper)
 	{
 		_ = testOutputHelper; // Kept for compatibility with derived test classes
-		var loggerFactory = LoggerFactory.Create(builder =>
+		_loggerFactory = LoggerFactory.Create(builder =>
 		{
 			builder
 				.AddDebug()
 				.AddFilter(level => level >= LogLevel.Debug);
 		});
 
-		Logger = loggerFactory.CreateLogger<TestBase>();
+		Logger = _loggerFactory.CreateLogger<TestBase>();
 		TestConfig = TestConfig.Load();
-		TestConfig.Options.Logger = loggerFactory.CreateLogger<MicrosoftAzureClient>();
+		TestConfig.Options.Logger = _loggerFactory.CreateLogger<MicrosoftAzureClient>();
 	}
 
-	protected MicrosoftAzureClient Client => field ??= new(TestConfig.Options);
+	protected MicrosoftAzureClient Client => _client ??= new(TestConfig.Options);
 
 	protected async Task<IEnumerable<Guid>> GetSubscriptionIdsAsync(CancellationToken cancellationToken)
 	{
@@ -40,5 +44,30 @@ public class TestBase
 		response.Values.Should().NotBeNullOrEmpty();
 
 		return response.Values.Take(TestConfig.MaxSubscriptionTake).Select(s => new Guid(s.Id.Split('/').Last()));
+	}
+
+	/// <summary>
+	/// Releases the logger factory and, if one was created, the client with its HTTP handlers.
+	/// </summary>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (_disposed)
+		{
+			return;
+		}
+
+		if (disposing)
+		{
+			_client?.Dispose();
+			_loggerFactory.Dispose();
+		}
+
+		_disposed = true;
+	}
+
+	public void Dispose()
+	{
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
 	}
 }

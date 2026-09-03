@@ -15,7 +15,8 @@ public class IncidentTests(ITestOutputHelper testOutputHelper) : SentinelTestBas
 						subscriptionId,
 						resourceGroupName,
 						workspaceName,
-						CancellationToken);
+						CancellationToken)
+					.ConfigureAwait(false);
 
 				response.CheckValues();
 			},

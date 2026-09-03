@@ -16,7 +16,8 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : Senti
 						subscriptionId,
 						resourceGroupName,
 						workspaceName,
-						CancellationToken);
+						CancellationToken)
+					.ConfigureAwait(false);
 
 				response.CheckValues();
 				if (response.Values.Count > 0)
@@ -37,7 +38,8 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : Senti
 						subscriptionId,
 						resourceGroupName,
 						workspaceName,
-						CancellationToken);
+						CancellationToken)
+					.ConfigureAwait(false);
 
 				response.Should().NotBeNull();
 				response.Values.First().Properties.Should().NotBeNull();
@@ -54,7 +56,8 @@ public class ThreatIntelligenceTests(ITestOutputHelper testOutputHelper) : Senti
 					.GetWorkspacesAsync(
 						subscriptionId,
 						resourceGroupName,
-						CancellationToken);
+						CancellationToken)
+					.ConfigureAwait(false);
 
 				response.Should().NotBeNull();
 				response.Values.First().Properties.Should().NotBeNull();
