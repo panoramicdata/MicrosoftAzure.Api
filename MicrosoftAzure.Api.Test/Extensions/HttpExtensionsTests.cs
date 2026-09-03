@@ -29,13 +29,36 @@ public class HttpExtensionsTests
 		"eyJzdWIiOiJ0ZXN0Iiwibm90IjoicmVhbCJ9",
 		"c2lnbmF0dXJlLW5vdC1yZWFs");
 
+	/// <summary>
+	/// Renders a request carrying a single strongly typed Authorization header.
+	/// </summary>
+	private static string RequestDebugString(string scheme, string parameter)
+	{
+		using var request = new HttpRequestMessage();
+		request.Headers.Authorization = new AuthenticationHeaderValue(scheme, parameter);
+
+		return request.Headers.ToDebugString();
+	}
+
+	/// <summary>
+	/// Renders a request carrying headers added without validation, so that the casing and the exact
+	/// value reach the helper as the caller wrote them.
+	/// </summary>
+	private static string RequestDebugString(params (string Name, string Value)[] headers)
+	{
+		using var request = new HttpRequestMessage();
+		foreach (var (name, value) in headers)
+		{
+			request.Headers.TryAddWithoutValidation(name, value);
+		}
+
+		return request.Headers.ToDebugString();
+	}
+
 	[Fact]
 	public void ToDebugString_BearerToken_DoesNotLeakTheCredential()
 	{
-		using var request = new HttpRequestMessage();
-		request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", FakeJwt);
-
-		var debugString = request.Headers.ToDebugString();
+		var debugString = RequestDebugString("Bearer", FakeJwt);
 
 		debugString.Should().NotContain(FakeJwt);
 		debugString.Should().NotContain("c2lnbmF0dXJlLW5vdC1yZWFs");
@@ -44,22 +67,13 @@ public class HttpExtensionsTests
 
 	[Fact]
 	public void ToDebugString_BearerToken_KeepsTheSchemeAndLength()
-	{
-		using var request = new HttpRequestMessage();
-		request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", FakeJwt);
-
-		var debugString = request.Headers.ToDebugString();
-
-		debugString.Should().Be($"Authorization=Bearer <redacted, length {FakeJwt.Length}>");
-	}
+		=> RequestDebugString("Bearer", FakeJwt)
+			.Should().Be($"Authorization=Bearer <redacted, length {FakeJwt.Length}>");
 
 	[Fact]
 	public void ToDebugString_BasicScheme_KeepsTheSchemeAndRedactsTheCredential()
 	{
-		using var request = new HttpRequestMessage();
-		request.Headers.Authorization = new AuthenticationHeaderValue("Basic", "dXNlcjpwYXNzd29yZA==");
-
-		var debugString = request.Headers.ToDebugString();
+		var debugString = RequestDebugString("Basic", "dXNlcjpwYXNzd29yZA==");
 
 		debugString.Should().Be("Authorization=Basic <redacted, length 20>");
 		debugString.Should().NotContain("dXNlcjpwYXNzd29yZA==");
@@ -75,14 +89,24 @@ public class HttpExtensionsTests
 	[InlineData("AuThOrIzAtIoN")]
 	public void ToDebugString_AuthorizationHeader_IsRedactedWhateverTheCasing(string headerName)
 	{
-		using var request = new HttpRequestMessage();
-		request.Headers.TryAddWithoutValidation(headerName, $"Bearer {FakeJwt}");
-
-		var debugString = request.Headers.ToDebugString();
+		// HttpHeaders canonicalises the name of a known header, so the rendered name is always
+		// "Authorization" here whatever casing went in; only the redaction is under test.
+		var debugString = RequestDebugString((headerName, $"Bearer {FakeJwt}"));
 
 		debugString.Should().NotContain(FakeJwt);
-		debugString.Should().Contain("<redacted");
+		debugString.Should().Be($"Authorization=Bearer <redacted, length {FakeJwt.Length}>");
 	}
+
+	/// <summary>
+	/// A vendor may prefix the standard header name rather than using it directly. An exact-match list
+	/// alone would render such a header verbatim, so the suffix is matched too.
+	/// </summary>
+	[Theory]
+	[InlineData("X-Samanage-Authorization")]
+	[InlineData("X-Vendor-Authorization")]
+	public void ToDebugString_VendorPrefixedAuthorizationHeader_IsRedacted(string headerName)
+		=> RequestDebugString((headerName, $"Bearer {FakeJwt}"))
+			.Should().Be($"{headerName}=Bearer <redacted, length {FakeJwt.Length}>");
 
 	[Theory]
 	[InlineData("Proxy-Authorization")]
@@ -94,31 +118,11 @@ public class HttpExtensionsTests
 	public void ToDebugString_OtherCredentialHeaders_AreRedacted(string headerName)
 	{
 		const string secret = "s3cr3t-value-that-must-not-be-logged";
-		using var request = new HttpRequestMessage();
-		request.Headers.TryAddWithoutValidation(headerName, secret);
 
-		var debugString = request.Headers.ToDebugString();
+		var debugString = RequestDebugString((headerName, secret));
 
 		debugString.Should().NotContain(secret);
 		debugString.Should().Contain("<redacted");
-	}
-
-	/// <summary>
-	/// A vendor may prefix the standard header name rather than using it directly. An exact-match list
-	/// alone would render such a header verbatim, so the suffix is matched too.
-	/// </summary>
-	[Theory]
-	[InlineData("X-Samanage-Authorization")]
-	[InlineData("X-Vendor-Authorization")]
-	public void ToDebugString_VendorPrefixedAuthorizationHeader_IsRedacted(string headerName)
-	{
-		using var request = new HttpRequestMessage();
-		request.Headers.TryAddWithoutValidation(headerName, $"Bearer {FakeJwt}");
-
-		var debugString = request.Headers.ToDebugString();
-
-		debugString.Should().NotContain(FakeJwt);
-		debugString.Should().Be($"{headerName}=Bearer <redacted, length {FakeJwt.Length}>");
 	}
 
 	/// <summary>
@@ -126,25 +130,13 @@ public class HttpExtensionsTests
 	/// </summary>
 	[Fact]
 	public void ToDebugString_CredentialWithoutAScheme_IsRedactedEntirely()
-	{
-		using var request = new HttpRequestMessage();
-		request.Headers.TryAddWithoutValidation("X-API-Key", "abcdef123456");
-
-		var debugString = request.Headers.ToDebugString();
-
-		debugString.Should().Be("X-API-Key=<redacted, length 12>");
-	}
+		=> RequestDebugString(("X-API-Key", "abcdef123456"))
+			.Should().Be("X-API-Key=<redacted, length 12>");
 
 	[Fact]
 	public void ToDebugString_NonSensitiveHeader_IsUnchanged()
-	{
-		using var request = new HttpRequestMessage();
-		request.Headers.TryAddWithoutValidation("traceparent", "00-abc123-def456-00");
-
-		var debugString = request.Headers.ToDebugString();
-
-		debugString.Should().Be("traceparent=00-abc123-def456-00");
-	}
+		=> RequestDebugString(("traceparent", "00-abc123-def456-00"))
+			.Should().Be("traceparent=00-abc123-def456-00");
 
 	/// <summary>
 	/// Redaction must be surgical: the diagnostically useful headers alongside the credential are what
@@ -153,12 +145,10 @@ public class HttpExtensionsTests
 	[Fact]
 	public void ToDebugString_RedactsOnlyTheSensitiveHeader()
 	{
-		using var request = new HttpRequestMessage();
-		request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", FakeJwt);
-		request.Headers.TryAddWithoutValidation("traceparent", "00-abc123-def456-00");
-		request.Headers.TryAddWithoutValidation("Request-Id", "|abc.def.");
-
-		var debugString = request.Headers.ToDebugString();
+		var debugString = RequestDebugString(
+			("Authorization", $"Bearer {FakeJwt}"),
+			("traceparent", "00-abc123-def456-00"),
+			("Request-Id", "|abc.def."));
 
 		debugString.Should().NotContain(FakeJwt);
 		debugString.Should().Contain("traceparent=00-abc123-def456-00");
@@ -167,11 +157,7 @@ public class HttpExtensionsTests
 
 	[Fact]
 	public void ToDebugString_NoHeaders_IsEmpty()
-	{
-		using var request = new HttpRequestMessage();
-
-		request.Headers.ToDebugString().Should().BeEmpty();
-	}
+		=> RequestDebugString().Should().BeEmpty();
 
 	/// <summary>
 	/// Response headers go through the same helper, so Set-Cookie is covered too.
@@ -196,10 +182,8 @@ public class HttpExtensionsTests
 	public void ToDebugString_CookieValueContainingASpace_IsRedactedWhole()
 	{
 		const string cookie = "session=abc123def456; HttpOnly";
-		using var request = new HttpRequestMessage();
-		request.Headers.TryAddWithoutValidation("Cookie", cookie);
 
-		var debugString = request.Headers.ToDebugString();
+		var debugString = RequestDebugString(("Cookie", cookie));
 
 		debugString.Should().Be($"Cookie=<redacted, length {cookie.Length}>");
 		debugString.Should().NotContain("session");
