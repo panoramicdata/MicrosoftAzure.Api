@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <PackageProjectUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/panoramicdata/MicrosoftAzure.Api</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageIcon>Icon.png</PackageIcon>
@@ -12,7 +12,7 @@
     <Summary>A .NET API for Microsoft Azure</Summary>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzureSentinel.Api</RepositoryUrl>
+    <RepositoryUrl>https://github.com/panoramicdata/MicrosoftAzure.Api</RepositoryUrl>
     <PackageReleaseNotes>
 			Security fix: sensitive HTTP headers are now redacted in diagnostic output.
 
