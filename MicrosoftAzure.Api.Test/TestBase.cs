@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace MicrosoftAzure.Api.Test;
 
+// Every test deriving from this base calls live Azure management APIs with credentials from user
+// secrets. CI has none, so the coverage job excludes them with --filter "Category!=Integration".
+[Trait("Category", "Integration")]
 public class TestBase : IDisposable
 {
 	private readonly ILoggerFactory _loggerFactory;
