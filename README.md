@@ -7,6 +7,8 @@
 
 A .NET API for Microsoft Azure.
 
+Supports .NET 11.0.
+
 Makes calls to endpoints set out here:
 * LogAnalytics Query API:
 	o https://learn.microsoft.com/en-us/rest/api/loganalytics/query/get?view=rest-loganalytics-2022-10-27-preview&tabs=HTTP
