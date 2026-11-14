@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7c55bd140e544652a4a8ed1a0ed9e729)](https://app.codacy.com/gh/panoramicdata/MicrosoftAzure.Api/dashboard?utm_source=gh&utm_medium=referral&utm_content=panoramicdata/MicrosoftAzure.Api&utm_campaign=Badge_Grade)
 
+> **Need help with APIs or .NET?** Panoramic Data are experts in APIs and .NET, and we can help with your development. [Contact us](https://www.panoramicdata.com/contact-us) or see our [software services](https://www.panoramicdata.com/services/software).
+
 A .NET API for Microsoft Azure.
 
 Supports .NET 11.0.
