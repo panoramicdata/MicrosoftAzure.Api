@@ -10,11 +10,11 @@ internal sealed class StubHttpHandler(Func<RecordedRequest, HttpResponseMessage>
 {
 	public List<RecordedRequest> Requests { get; } = [];
 
-	public static StubHttpHandler Always(System.Net.HttpStatusCode statusCode, string json)
-		=> new(_ => Json(statusCode, json));
+	public static StubHttpHandler Always(System.Net.HttpStatusCode statusCode, string body)
+		=> new(_ => Json(statusCode, body));
 
-	public static HttpResponseMessage Json(System.Net.HttpStatusCode statusCode, string json)
-		=> new(statusCode) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
+	public static HttpResponseMessage Json(System.Net.HttpStatusCode statusCode, string content)
+		=> new(statusCode) { Content = new StringContent(content, Encoding.UTF8, "application/json") };
 
 	protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 	{
