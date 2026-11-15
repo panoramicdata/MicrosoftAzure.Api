@@ -6,19 +6,33 @@ using System.Net.Http.Json;
 
 namespace MicrosoftAzure.Api;
 
-internal sealed class CustomHttpClientHandler : HttpClientHandler
+internal sealed class CustomHttpClientHandler : DelegatingHandler
 {
 	private readonly MicrosoftAzureClientOptions _options;
 	private readonly Uri _resource;
+	private readonly Func<HttpMessageHandler> _authHandlerFactory;
 
 	private BearerToken? _bearerToken;
 
 	public CustomHttpClientHandler(MicrosoftAzureClientOptions options, Uri baseAddress)
+		: this(options, baseAddress, CreateTransport, CreateTransport)
+	{
+	}
+
+	public CustomHttpClientHandler(
+		MicrosoftAzureClientOptions options,
+		Uri baseAddress,
+		Func<HttpMessageHandler> innerHandlerFactory,
+		Func<HttpMessageHandler> authHandlerFactory)
+		: base(innerHandlerFactory())
 	{
 		_options = options;
 		_resource = new(baseAddress.GetLeftPart(UriPartial.Authority));
-		CheckCertificateRevocationList = true;
+		_authHandlerFactory = authHandlerFactory;
 	}
+
+	private static HttpClientHandler CreateTransport()
+		=> new() { CheckCertificateRevocationList = true };
 
 	protected override async Task<HttpResponseMessage> SendAsync(
 		HttpRequestMessage request,
@@ -91,11 +105,7 @@ internal sealed class CustomHttpClientHandler : HttpClientHandler
 			return _bearerToken;
 		}
 
-		using var authHandler = new HttpClientHandler
-		{
-			CheckCertificateRevocationList = true
-		};
-		using var authHttpClient = new HttpClient(authHandler)
+		using var authHttpClient = new HttpClient(_authHandlerFactory())
 		{
 			BaseAddress = new Uri($"https://login.microsoftonline.com/{_options.TenantId}/oauth2/token")
 		};
